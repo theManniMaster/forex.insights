@@ -1,8 +1,15 @@
 import { Component } from "react";
+import { ConfigProvider } from "antd";
+import { theme } from "./themes";
 
+/**
+ * Main application component.
+ */
 class App extends Component {
     render() {
-        return <>Hello World!</>;
+        return <ConfigProvider theme={theme}>
+            <>Hello World!</>
+        </ConfigProvider>;
     }
 }
 
