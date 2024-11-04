@@ -7,23 +7,22 @@ import { colors, fontFamily, fontWeights } from "./variables";
 const theme: ThemeConfig = {
     token: {
         fontFamily,
-
-        // buttons
         colorPrimary: colors.black,
         colorText: colors.black,
-        colorBorder: colors.transparent,
+        colorBorder: colors.grey,
+        borderRadius: 24,        
         colorLink: colors.black,
-        lineWidth: 2,
+        lineWidth: 1,
+        controlHeight: 40,
     },
     components: {
         Button: {
             algorithm: true,
             fontFamily,
             fontWeight: fontWeights.semiBold,
-            borderRadius: 24,
             fontSize: 12,
             paddingContentHorizontal: 24,
-            controlHeight: 40,
+            lineWidth: 2,
 
             // primary button
             primaryColor: colors.white,
@@ -34,7 +33,6 @@ const theme: ThemeConfig = {
             defaultColor: colors.black,
             defaultBorderColor: colors.black,
             defaultShadow: colors.transparent,
-            
         }
     }
 };
