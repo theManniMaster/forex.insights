@@ -2,10 +2,9 @@
  * Theme style variables for antd. 
  */
 
-const fontFamily = `"Poppins", Sans-serif`;
+const fontFamily = "Poppins, Sans-serif";
 
 const fontWeights = {
-    thin: 100,
     regular: 400,
     medium: 500,
     semiBold: 600,
@@ -14,9 +13,9 @@ const fontWeights = {
 };
 
 const colors = {
-    grey: "#8a8a8a",
+    grey: "#8A8A8A",
     darkGrey: "#A0A0A0",
-    black: "#333333",
+    black: "#000000",
     white: "#FFFFFF",
     transparent: "transparent",
 };
