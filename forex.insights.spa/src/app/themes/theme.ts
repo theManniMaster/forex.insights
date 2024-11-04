@@ -33,6 +33,10 @@ const theme: ThemeConfig = {
             defaultColor: colors.black,
             defaultBorderColor: colors.black,
             defaultShadow: colors.transparent,
+        },
+        Input: {
+            borderRadius: 12,
+            paddingBlock: 12,
         }
     }
 };
