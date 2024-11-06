@@ -2,6 +2,7 @@ import { Component } from "react";
 import { Col, Form, Input, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
 import { AlertItem, ContactMethod, NotificationFrequency } from "./enums";
+import { CurrencyPairSelector } from "./components";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -38,6 +39,16 @@ class ForexAlertSetupPanel extends Component {
                                         <Radio value={NotificationFrequency.weekly}>Weekly</Radio>
                                     </Radio.Group>
                                 </Item>
+                            </Col>
+                        </Row>
+
+                        <Row className={styles.itemContainer}>
+                            <Col span={24} md={8}>
+                                <Text className={styles.label}>When:</Text>
+                            </Col>
+
+                            <Col span={24} md={16}>
+                                <CurrencyPairSelector />
                             </Col>
                         </Row>
 
