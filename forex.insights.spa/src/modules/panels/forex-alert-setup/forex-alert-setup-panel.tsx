@@ -1,5 +1,5 @@
-import { Component } from "react";
-import { Col, Form, Input, Radio, Row, Typography } from "antd";
+import { Component, createRef } from "react";
+import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
 import { AlertItem, ContactMethod, NotificationFrequency } from "./enums";
 import { CurrencyPairSelector } from "./components";
@@ -11,15 +11,29 @@ const { Item } = Form;
  * Panel for setting up forex alerts.
  */
 class ForexAlertSetupPanel extends Component {
+    formRef = createRef<FormInstance>();
+
+    handleFormValuesSubmit = () => {
+        const validation = this.formRef.current?.validateFields();
+
+        if (!validation)
+            return;
+
+        console.log(validation);
+    };
+
     render() {
         return (
-            <Row justify="center">
-                <Col span={24}>
+            <Row justify="center" className={styles.container}>
+                <Col>
                     <Text className={styles.header}>Setup Alert.</Text>
                 </Col>
 
                 <Col span={24}>
-                    <Form>
+                    <Form
+                        ref={this.formRef}
+                        onFinish={this.handleFormValuesSubmit}
+                    >
                         <Row className={styles.itemContainer}>
                             <Col span={24} md={8}>
                                 <Text className={styles.label}>Notify me:</Text>
@@ -28,11 +42,11 @@ class ForexAlertSetupPanel extends Component {
                             <Col span={24} md={16}>
                                 <Item
                                     name={AlertItem.frequency}
+                                    rules={[{ required: true, message: "Please select a frequency." }]}
                                 >
                                     <Radio.Group
                                         optionType="button"
                                         buttonStyle="solid"
-                                        defaultValue={NotificationFrequency.once}
                                     >
                                         <Radio value={NotificationFrequency.once}>Once</Radio>
                                         <Radio value={NotificationFrequency.daily}>Daily</Radio>
@@ -52,7 +66,7 @@ class ForexAlertSetupPanel extends Component {
                             </Col>
                         </Row>
 
-                        <Row gutter={40}>
+                        <Row>
                             <Col span={24} md={8}>
                                 <Text className={styles.label}>Reaches a minimum of:</Text>
                             </Col>
@@ -60,6 +74,7 @@ class ForexAlertSetupPanel extends Component {
                             <Col span={24} md={16}>
                                 <Item
                                     name={AlertItem.minimumRate}
+                                    rules={[{ required: true, message: "Please select a minimum rate." }]}
                                 >
                                     <Input
                                         type="number"
@@ -70,7 +85,7 @@ class ForexAlertSetupPanel extends Component {
                             </Col>
                         </Row>
 
-                        <Row gutter={40}>
+                        <Row>
                             <Col span={24} md={8}>
                                 <Text className={styles.label}>Through:</Text>
                             </Col>
@@ -78,11 +93,11 @@ class ForexAlertSetupPanel extends Component {
                             <Col span={24} md={16}>
                                 <Item
                                     name={AlertItem.contactMethod}
+                                    rules={[{ required: true, message: "Please select a contact method." }]}
                                 >
                                     <Radio.Group
                                         optionType="button"
                                         buttonStyle="solid"
-                                        defaultValue={ContactMethod.email}
                                     >
                                         <Radio value={ContactMethod.email}>Email</Radio>
                                         <Radio value={ContactMethod.sms}>SMS</Radio>
@@ -93,6 +108,15 @@ class ForexAlertSetupPanel extends Component {
                     </Form>
                 </Col>
 
+                <Col>
+                    <Button
+                        className={styles.button}
+                        type="primary"
+                        onClick={() => this.formRef.current?.submit()}
+                    >
+                        Create
+                    </Button>
+                </Col>
             </Row>
         );
     }
