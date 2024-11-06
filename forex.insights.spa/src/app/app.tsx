@@ -1,6 +1,8 @@
 import { Component } from "react";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Row } from "antd";
 import { theme } from "./themes";
+import { ForexAlertSetupPanel, Header } from "../modules";
+import styles from "./styles/app.module.less";
 
 /**
  * Main application component.
@@ -8,7 +10,10 @@ import { theme } from "./themes";
 class App extends Component {
     render() {
         return <ConfigProvider theme={theme}>
-            <>Hello World!</>
+            <Row className={styles.container}>
+                <Header />
+                <ForexAlertSetupPanel />
+            </Row>
         </ConfigProvider>;
     }
 }

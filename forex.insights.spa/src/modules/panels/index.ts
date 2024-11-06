@@ -1,0 +1,1 @@
+export { ForexAlertSetupPanel } from "./forex-alert-setup";
