@@ -15,7 +15,7 @@ interface Country {
     /**
      * Country flag.
      */
-    //flag: string;
+    flag: string;
 }
 
 export type { Country };
