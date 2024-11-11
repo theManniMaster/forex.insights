@@ -58,7 +58,7 @@ class DashboardItemCard extends Component<Props> {
             currency: alert.toCurrency,
         });
 
-        return <Col span={24}>
+        return <Col span={24} md={12}>
             <Card
                 className={styles.card}
                 actions={[
@@ -66,18 +66,18 @@ class DashboardItemCard extends Component<Props> {
                     <DeleteOutlined onClick={this.handleDelete} />,
                 ]}
             >
-                <Row justify="center">
-                    <Col span={24}>
+                <Row justify="center" align="middle">
+                    <Col span={24} md={10}>
                         <img
                             className={styles.flag}
                             src={countries.find(country => country.currency === alert.fromCurrency)?.flag}
                             alt={alert.fromCurrency}
                         />
                     </Col>
-                    <Col>
+                    <Col md={4}>
                         <Text className={styles.flagDivider}>to</Text>
                     </Col>
-                    <Col span={24}>
+                    <Col span={24} md={10}>
                         <img
                             className={styles.flag}
                             src={countries.find(country => country.currency === alert.toCurrency)?.flag}
