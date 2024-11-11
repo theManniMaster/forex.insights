@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { ConfigProvider, Row } from "antd";
 import { theme } from "./themes";
-import { ForexAlertSetupPanel, Header } from "../modules";
+import { DashboardPanel, Header } from "../modules";
 import styles from "./styles/app.module.less";
 
 /**
@@ -12,7 +12,7 @@ class App extends Component {
         return <ConfigProvider theme={theme}>
             <Row className={styles.container}>
                 <Header />
-                <ForexAlertSetupPanel />
+                <DashboardPanel />
             </Row>
         </ConfigProvider>;
     }

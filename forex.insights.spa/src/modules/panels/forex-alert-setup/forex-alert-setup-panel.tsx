@@ -1,8 +1,9 @@
 import { Component, createRef } from "react";
 import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
-import { AlertItem, ContactMethod, NotificationFrequency } from "./enums";
 import { CurrencyPairSelector } from "./components";
+import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
+import { AlertItem } from "./enums";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -30,7 +31,7 @@ class ForexAlertSetupPanel extends Component {
                 </Col>
 
                 <Col span={24}>
-                    <Form
+                    <Form<ForexAlertGetResponse>
                         ref={this.formRef}
                         onFinish={this.handleFormValuesSubmit}
                     >

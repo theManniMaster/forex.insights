@@ -1,2 +1,2 @@
 export { default as Header } from "./headers/header";
-export { ForexAlertSetupPanel } from "./panels";
+export { ForexAlertSetupPanel, DashboardPanel } from "./panels";
