@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Button, Col, Row, Typography } from "antd";
+import { Button, Col, Typography } from "antd";
 import { PlusOutlined, RobotOutlined } from "@ant-design/icons";
 import styles from "./styles/empty-dashboard.module.less";
 
@@ -10,7 +10,7 @@ const { Text } = Typography;
  */
 class EmptyDashboard extends Component {
     render() {
-        return <Row justify="center">
+        return <>
             <Col span={24}>
                 <RobotOutlined className={styles.emptyImage} />
             </Col>
@@ -27,7 +27,7 @@ class EmptyDashboard extends Component {
                     Add Alert
                 </Button>
             </Col>
-        </Row>;
+        </>;
     }
 }
 

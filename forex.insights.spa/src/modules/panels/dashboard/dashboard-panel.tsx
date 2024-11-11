@@ -35,22 +35,20 @@ class DashboardPanel extends Component<Props, State> {
         const { alerts } = this.state;
 
         return <Row justify="center" align="middle" className={styles.container}>
-            <Col span={24}>
-                {
-                    alerts.length === 0 ?
-                        <EmptyDashboard />
-                        :
-                        <>
-                            <Col>
-                                <Text className={styles.header}>Active Alerts.</Text>
-                            </Col>
+            {
+                alerts.length === 0 ?
+                    <EmptyDashboard />
+                    :
+                    <>
+                        <Col>
+                            <Text className={styles.header}>Active Alerts.</Text>
+                        </Col>
 
-                            {
-                                alerts.map(alert => <DashboardItemCard key={alert.id} alert={alert} />)
-                            }
-                        </>
-                }
-            </Col>
+                        {
+                            alerts.map(alert => <DashboardItemCard key={alert.id} alert={alert} />)
+                        }
+                    </>
+            }
         </Row>;
     }
 }
