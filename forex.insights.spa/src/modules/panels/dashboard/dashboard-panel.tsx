@@ -34,12 +34,14 @@ class DashboardPanel extends Component<Props, State> {
     render() {
         const { alerts } = this.state;
 
-        return <Row justify="center" align="middle" className={styles.container}>
+        return <>
             {
                 alerts.length === 0 ?
-                    <EmptyDashboard />
+                    <Row justify="center" align="middle" className={styles.container}>
+                        <EmptyDashboard />
+                    </Row>
                     :
-                    <>
+                    <Row justify="center">
                         <Col>
                             <Text className={styles.header}>Active Alerts.</Text>
                         </Col>
@@ -47,9 +49,9 @@ class DashboardPanel extends Component<Props, State> {
                         {
                             alerts.map(alert => <DashboardItemCard key={alert.id} alert={alert} />)
                         }
-                    </>
+                    </Row>
             }
-        </Row>;
+        </>;
     }
 }
 
