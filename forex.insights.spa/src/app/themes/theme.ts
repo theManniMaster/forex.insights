@@ -37,6 +37,9 @@ const theme: ThemeConfig = {
         Input: {
             borderRadius: 12,
             paddingBlock: 12,
+        },
+        Select: {
+            optionSelectedBg: colors.grey,
         }
     }
 };
