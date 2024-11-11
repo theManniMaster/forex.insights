@@ -1,8 +1,9 @@
 import { Component } from "react";
-import { Col, Row, Typography } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import styles from "./styles/dashboard-panel.module.less";
 import { ForexAlertGetResponse } from "../../../api";
 import { DashboardItemCard, EmptyDashboard } from "./components";
+import { PlusOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -36,14 +37,19 @@ class DashboardPanel extends Component<Props, State> {
 
         return <>
             {
-                alerts.length === 0 ?
+                alerts.length !== 0 ?
                     <Row justify="center" align="middle" className={styles.container}>
                         <EmptyDashboard />
                     </Row>
                     :
                     <Row justify="center" className={styles.container}>
                         <Col>
-                            <Text className={styles.header}>Active Alerts.</Text>
+                            <Button
+                                type="primary"
+                                icon={<PlusOutlined />}
+                            >
+                                Add Alert
+                            </Button>
                         </Col>
 
                         {
