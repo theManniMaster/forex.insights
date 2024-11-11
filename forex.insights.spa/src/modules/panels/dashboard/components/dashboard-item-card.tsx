@@ -1,6 +1,11 @@
 import { Component } from "react";
-import { ForexAlertGetResponse } from "../../../../api";
-import { Card } from "antd";
+import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../../api";
+import { Card, Col, Row, Typography } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import styles from "./styles/dashboard-item-card.module.less";
+import { countries } from "../../forex-alert-setup";
+
+const { Text } = Typography;
 
 /**
  * Dashboard item card props.
@@ -13,12 +18,88 @@ interface Props {
  * Dashboard item card.
  */
 class DashboardItemCard extends Component<Props> {
-    render() {
+
+    getAlertFrequencyLabel = () => {
         const { alert } = this.props;
 
-        return <Card>
-            
-        </Card>;
+        switch (alert.frequency) {
+            case NotificationFrequency.once:
+                return "Once";
+            case NotificationFrequency.daily:
+                return "Daily";
+            case NotificationFrequency.weekly:
+                return "Weekly";
+            default:
+                return "";
+        };
+    };
+
+    getContactMethodLabel = () => {
+        const { alert } = this.props;
+
+        switch (alert.contactMethod) {
+            case ContactMethod.email:
+                return "Email";
+            case ContactMethod.sms:
+                return "SMS";
+            default:
+                return "";
+        };
+    };
+
+    handleEdit = () => { };
+
+    handleDelete = () => { };
+
+    render() {
+        const { alert } = this.props;
+        const numberFormatter = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: alert.toCurrency,
+        });
+
+        return <Col span={24}>
+            <Card
+                className={styles.card}
+                actions={[
+                    <EditOutlined onClick={this.handleEdit} />,
+                    <DeleteOutlined onClick={this.handleDelete} />,
+                ]}
+            >
+                <Row justify="center">
+                    <Col span={24}>
+                        <img
+                            className={styles.flag}
+                            src={countries.find(country => country.currency === alert.fromCurrency)?.flag}
+                            alt={alert.fromCurrency}
+                        />
+                    </Col>
+                    <Col>
+                        <Text className={styles.flagDivider}>to</Text>
+                    </Col>
+                    <Col span={24}>
+                        <img
+                            className={styles.flag}
+                            src={countries.find(country => country.currency === alert.toCurrency)?.flag}
+                            alt={alert.toCurrency}
+                        />
+                    </Col>
+                </Row>
+
+                <Row className={styles.dataContainer}>
+                    <Col span={16}>
+                        <Row className={styles.label}>Minimum Amount:</Row>
+                        <Row className={styles.label}>Frequency:</Row>
+                        <Row className={styles.label}>Contact Method:</Row>
+                    </Col>
+                    <Col span={8}>
+                        <Row className={styles.labelValue}>{numberFormatter.format(alert.minimumRate)}</Row>
+                        <Row className={styles.labelValue}>{this.getAlertFrequencyLabel()}</Row>
+                        <Row className={styles.labelValue}>{this.getContactMethodLabel()}</Row>
+                    </Col>
+                </Row>
+            </Card>
+        </Col>;
     }
 }
 
