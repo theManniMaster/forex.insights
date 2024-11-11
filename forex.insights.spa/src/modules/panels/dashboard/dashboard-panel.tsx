@@ -41,7 +41,7 @@ class DashboardPanel extends Component<Props, State> {
                         <EmptyDashboard />
                     </Row>
                     :
-                    <Row justify="center">
+                    <Row justify="center" className={styles.container}>
                         <Col>
                             <Text className={styles.header}>Active Alerts.</Text>
                         </Col>
