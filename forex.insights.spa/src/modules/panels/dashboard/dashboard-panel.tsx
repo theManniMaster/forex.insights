@@ -1,66 +1,55 @@
 import { Component } from "react";
-import { Col, Row, Table, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import styles from "./styles/dashboard-panel.module.less";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { ColumnsType } from "antd/es/table";
+import { ForexAlertGetResponse } from "../../../api";
+import { DashboardItemCard, EmptyDashboard } from "./components";
 
 const { Text } = Typography;
 
 /**
+ * Dashboard props.
+ */
+interface Props { }
+
+/**
+ * Dashboard state.
+ */
+interface State {
+    alerts: ForexAlertGetResponse[];
+}
+
+/**
  * Dashboard panel component.
  */
-class DashboardPanel extends Component {
-    columns: ColumnsType<ForexAlertGetResponse> = [
-        {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-            render: () => <Text>Name</Text>
-        },
-        {
-            title: "Frequency",
-            dataIndex: "frequency",
-            key: "frequency",
-            render: (frequency: NotificationFrequency) => <Text>{NotificationFrequency[frequency]}</Text>
-        },
-        {
-            title: "From Currency",
-            dataIndex: "fromCurrency",
-            key: "fromCurrency",
-        },
-        {
-            title: "To Currency",
-            dataIndex: "toCurrency",
-            key: "toCurrency",
-        },
-        {
-            title: "Minimum Rate",
-            dataIndex: "minimumRate",
-            key: "minimumRate",
-        },
-        {
-            title: "Contact Method",
-            dataIndex: "contactMethod",
-            key: "contactMethod",
-            render: (contactMethod: ContactMethod) => <Text>{ContactMethod[contactMethod]}</Text>
-        },
-        {
-            title: "Next Alert",
-            dataIndex: "nextAlertTime",
-            key: "nextAlertTime",
-        }
-    ];
+class DashboardPanel extends Component<Props, State> {
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            alerts: []
+        };
+    }
 
     render() {
-        return <Row justify="center" className={styles.container}>
-            <Col>
-                <Text className={styles.header}>Active Alerts.</Text>
-            </Col>
+        const { alerts } = this.state;
 
+        return <Row justify="center" align="middle" className={styles.container}>
             <Col span={24}>
-                <Table<ForexAlertGetResponse>
-                    columns={this.columns}
-                />
+                {
+                    alerts.length === 0 ?
+                        <EmptyDashboard />
+                        :
+                        <>
+                            <Col>
+                                <Text className={styles.header}>Active Alerts.</Text>
+                            </Col>
+
+                            {
+                                alerts.map(alert => <DashboardItemCard key={alert.id} alert={alert} />)
+                            }
+                        </>
+                }
             </Col>
         </Row>;
     }
