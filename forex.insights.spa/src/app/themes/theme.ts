@@ -20,7 +20,7 @@ const theme: ThemeConfig = {
             algorithm: true,
             fontFamily,
             fontWeight: fontWeights.semiBold,
-            fontSize: 12,
+            fontSize: 14,
             paddingContentHorizontal: 24,
             lineWidth: 2,
 
