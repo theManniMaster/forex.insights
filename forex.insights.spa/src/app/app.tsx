@@ -1,21 +1,20 @@
 import { Component } from "react";
-import { ConfigProvider, Row } from "antd";
-import { theme } from "./themes";
-import styles from "./styles/app.module.less";
-import { Header } from "./components";
-import { DashboardPanel } from "../modules";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 /**
  * Main application component.
  */
 class App extends Component {
     render() {
-        return <ConfigProvider theme={theme}>
-            <Row className={styles.container}>
-                <Header />
-                <DashboardPanel />
-            </Row>
-        </ConfigProvider>;
+        //return <ConfigProvider theme={theme}>
+        //    <Row className={styles.container}>
+        //        <Header />
+        //        <DashboardPanel />
+        //    </Row>
+        //</ConfigProvider>;
+
+        return <RouterProvider router={router} />
     }
 }
 
