@@ -4,6 +4,7 @@ import styles from "./styles/dashboard-panel.module.less";
 import { ForexAlertGetResponse } from "../../api";
 import { DashboardItemCard, EmptyDashboard } from "./components";
 import { PlusOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 /**
  * Dashboard props.
@@ -42,12 +43,14 @@ class DashboardPanel extends Component<Props, State> {
                     :
                     <div className={styles.container}>
                         <Row justify="center" className={styles.buttonContainer}>
-                            <Button
-                                type="primary"
-                                icon={<PlusOutlined />}
-                            >
-                                Add Alert
-                            </Button>
+                            <Link to="">
+                                <Button
+                                    type="primary"
+                                    icon={<PlusOutlined />}
+                                >
+                                    Add Alert
+                                </Button>
+                            </Link>
                         </Row>
 
                         <Row gutter={[40, 40]}>

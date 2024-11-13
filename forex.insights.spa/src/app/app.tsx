@@ -1,8 +1,8 @@
 import { Component } from "react";
 import { RouterProvider } from "react-router-dom";
-import { router } from "./router";
 import { ConfigProvider } from "antd";
 import { theme } from "./themes";
+import { router } from "../router";
 
 /**
  * Main application component.

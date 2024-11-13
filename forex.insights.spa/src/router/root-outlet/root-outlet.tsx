@@ -1,8 +1,8 @@
 import { Component } from "react";
-import { Header } from "../headers";
 import { Outlet } from "react-router-dom";
 import { Row } from "antd";
 import styles from "./styles/root-outlet.module.less";
+import { Header } from "../../modules";
 
 /**
  * Root outlet component.
