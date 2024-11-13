@@ -1,8 +1,9 @@
 import { Component } from "react";
 import { ConfigProvider, Row } from "antd";
 import { theme } from "./themes";
-import { DashboardPanel, Header } from "../modules";
 import styles from "./styles/app.module.less";
+import { Header } from "./components";
+import { DashboardPanel } from "../modules";
 
 /**
  * Main application component.

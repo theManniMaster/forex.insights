@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Button, Row } from "antd";
 import styles from "./styles/dashboard-panel.module.less";
-import { ForexAlertGetResponse } from "../../../api";
+import { ForexAlertGetResponse } from "../../api";
 import { DashboardItemCard, EmptyDashboard } from "./components";
 import { PlusOutlined } from "@ant-design/icons";
 

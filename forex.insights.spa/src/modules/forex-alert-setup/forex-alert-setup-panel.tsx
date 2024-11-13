@@ -2,7 +2,7 @@ import { Component, createRef } from "react";
 import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
 import { CurrencyPairSelector } from "./components";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
+import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
 import { AlertItem } from "./enums";
 
 const { Text } = Typography;
