@@ -1,6 +1,6 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { ErrorPage, RootOutlet } from "../components";
 import { DashboardPanel } from "../../modules";
-import { ErrorPage } from "../components";
 
 /**
  * React browser router for defining UI paths.
@@ -8,8 +8,18 @@ import { ErrorPage } from "../components";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <DashboardPanel />,
+        element: <RootOutlet />,
         errorElement: <ErrorPage />,
+        children: [
+            {
+                index: true,
+                element: <Navigate to="dashboard" replace />,
+            },
+            {
+                path: "dashboard",
+                element: <DashboardPanel />,
+            }
+        ]
     }
 ]);
 
