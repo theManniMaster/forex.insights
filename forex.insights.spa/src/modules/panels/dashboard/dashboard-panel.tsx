@@ -36,7 +36,7 @@ class DashboardPanel extends Component<Props, State> {
         return <>
             {
                 alerts.length === 0 ?
-                    <Row justify="center" align="middle" className={styles.container}>
+                    <Row justify="center" align="middle" className={styles.emptyDataContainer}>
                         <EmptyDashboard />
                     </Row>
                     :
