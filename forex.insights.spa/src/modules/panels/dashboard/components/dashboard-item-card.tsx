@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../../api";
-import { Card, Col, Row, Typography } from "antd";
+import { Card, Col, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
 import { countries } from "../../forex-alert-setup";
@@ -91,11 +91,20 @@ class DashboardItemCard extends Component<Props> {
                         <Row className={styles.label}>Minimum Amount:</Row>
                         <Row className={styles.label}>Frequency:</Row>
                         <Row className={styles.label}>Contact Method:</Row>
+                        <Row className={styles.label}>Status:</Row>
                     </Col>
                     <Col span={8}>
                         <Row className={styles.labelValue}>{numberFormatter.format(alert.minimumRate)}</Row>
                         <Row className={styles.labelValue}>{this.getAlertFrequencyLabel()}</Row>
                         <Row className={styles.labelValue}>{this.getContactMethodLabel()}</Row>
+                        <Row className={styles.labelValue}>
+                            {
+                                alert.nextAlertTime ?
+                                    <Tag color="success" bordered={false} className={styles.tag}>Completed</Tag>
+                                    :
+                                    <Tag color="blue" bordered={false} className={styles.tag}>Active</Tag>
+                            }
+                        </Row>
                     </Col>
                 </Row>
             </Card>

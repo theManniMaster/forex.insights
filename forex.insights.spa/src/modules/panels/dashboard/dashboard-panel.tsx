@@ -26,40 +26,7 @@ class DashboardPanel extends Component<Props, State> {
         super(props);
 
         this.state = {
-            alerts: [
-                {
-                    id: "1",
-                    contactMethod: 0,
-                    frequency: 0,
-                    fromCurrency: "USD",
-                    toCurrency: "EUR",
-                    minimumRate: 123409.99,
-                },
-                {
-                    id: "2",
-                    contactMethod: 1,
-                    frequency: 1,
-                    fromCurrency: "INR",
-                    toCurrency: "CAD",
-                    minimumRate: 40,
-                },
-                {
-                    id: "3",
-                    contactMethod: 0,
-                    frequency: 2,
-                    fromCurrency: "USD",
-                    toCurrency: "EUR",
-                    minimumRate: 40,
-                },
-                {
-                    id: "4",
-                    contactMethod: 1,
-                    frequency: 0,
-                    fromCurrency: "USD",
-                    toCurrency: "EUR",
-                    minimumRate: 40,
-                }
-            ]
+            alerts: []
         };
     }
 
