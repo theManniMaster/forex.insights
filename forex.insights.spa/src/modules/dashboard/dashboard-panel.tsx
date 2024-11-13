@@ -5,6 +5,7 @@ import { ForexAlertGetResponse } from "../../api";
 import { DashboardItemCard, EmptyDashboard } from "./components";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { Routes } from "../../router";
 
 /**
  * Dashboard props.
@@ -43,7 +44,7 @@ class DashboardPanel extends Component<Props, State> {
                     :
                     <div className={styles.container}>
                         <Row justify="center" className={styles.buttonContainer}>
-                            <Link to="">
+                            <Link to={Routes.create}>
                                 <Button
                                     type="primary"
                                     icon={<PlusOutlined />}

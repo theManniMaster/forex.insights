@@ -2,6 +2,8 @@ import { Component } from "react";
 import { Button, Col, Typography } from "antd";
 import { PlusOutlined, RobotOutlined } from "@ant-design/icons";
 import styles from "./styles/empty-dashboard.module.less";
+import { Routes } from "../../../router";
+import { Link } from "react-router-dom";
 
 const { Text } = Typography;
 
@@ -20,12 +22,14 @@ class EmptyDashboard extends Component {
             </Col>
 
             <Col>
-                <Button
-                    type="primary"
-                    icon={<PlusOutlined />}
-                >
-                    Add Alert
-                </Button>
+                <Link to={Routes.create}>
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                    >
+                        Add Alert
+                    </Button>
+                </Link>
             </Col>
         </>;
     }

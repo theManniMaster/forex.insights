@@ -3,7 +3,8 @@
  */
 enum Routes {
     root = "/",
-    dashboard = "dashboard",
+    dashboard = "/dashboard",
+    create = "/create",
 }
 
 export default Routes;
