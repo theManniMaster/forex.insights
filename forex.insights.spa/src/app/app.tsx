@@ -1,8 +1,8 @@
 import { Component } from "react";
-import { ConfigProvider, Row } from "antd";
+import { RouterProvider } from "react-router-dom";
+import { ConfigProvider } from "antd";
 import { theme } from "./themes";
-import { DashboardPanel, Header } from "../modules";
-import styles from "./styles/app.module.less";
+import { router } from "../router";
 
 /**
  * Main application component.
@@ -10,10 +10,7 @@ import styles from "./styles/app.module.less";
 class App extends Component {
     render() {
         return <ConfigProvider theme={theme}>
-            <Row className={styles.container}>
-                <Header />
-                <DashboardPanel />
-            </Row>
+            <RouterProvider router={router} />
         </ConfigProvider>;
     }
 }

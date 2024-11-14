@@ -1,0 +1,1 @@
+export { default as RootOutlet } from "./root-outlet";

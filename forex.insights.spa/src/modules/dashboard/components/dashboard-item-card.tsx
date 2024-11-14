@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../../api";
+import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
 import { Card, Col, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
