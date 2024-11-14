@@ -14,13 +14,23 @@ const { Item } = Form;
 class ForexAlertSetupPanel extends Component {
     formRef = createRef<FormInstance>();
 
-    handleFormValuesSubmit = () => {
-        const validation = this.formRef.current?.validateFields();
+    handleFormValuesSubmit = async () => {
+        const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
         if (!validation)
             return;
 
-        console.log(validation);
+        // TODO: use enum or maybe typed version of store.
+        const alert: ForexAlertGetResponse = {
+            id: "",
+            frequency: validation.frequency,
+            fromCurrency: validation.fromCurrency,
+            toCurrency: validation.toCurrency,
+            contactMethod: validation.contactMethod,
+            minimumRate: validation.minimumRate
+        };
+
+        console.log(alert);
     };
 
     render() {

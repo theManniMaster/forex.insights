@@ -15,7 +15,7 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Navigate to={Routes.dashboard} replace />, // update this to include login page as well.
+                element: <Navigate to={Routes.dashboard} replace />, // TODO: update this to include login page as well.
             },
             {
                 path: Routes.dashboard,
