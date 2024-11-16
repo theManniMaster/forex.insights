@@ -1,3 +1,6 @@
+using forex.insights.api.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace forex.insights.api
 {
     public class Program
@@ -8,6 +11,10 @@ namespace forex.insights.api
 
             // Add services to the container.
             builder.Services.AddAuthorization();
+
+            builder.Services.AddDbContext<ForexAlertDbContext>(options => 
+                options.UseSqlServer(builder.Configuration.GetConnectionString("ForexAlertDbConnectionString"))
+                );
 
 
             var app = builder.Build();
