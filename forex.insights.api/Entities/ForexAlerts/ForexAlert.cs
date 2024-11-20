@@ -1,6 +1,7 @@
 ﻿using forex.insights.api.Entities.ForexAlerts.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace forex.insights.api.Entities.ForexAlerts
 {
@@ -12,7 +13,8 @@ namespace forex.insights.api.Entities.ForexAlerts
         /// <summary>
         /// Unique identifier.
         /// </summary>
-        [Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace forex.insights.api.Entities.ForexAlerts
         /// Minimum rate for alert.
         /// </summary>
         [Required]
-        [Precision(6, 2)]
+        [Precision(9, 2)]
         public decimal MinimumRate { get; set; }
 
         /// <summary>
@@ -51,6 +53,6 @@ namespace forex.insights.api.Entities.ForexAlerts
         /// <summary>
         /// Next alert time.
         /// </summary>
-        public string? NextAlertTime { get; set; }
+        public DateTime? NextAlertTime { get; set; }
     }
 }

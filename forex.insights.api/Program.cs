@@ -16,7 +16,6 @@ namespace forex.insights.api
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ForexAlertDbConnectionString"))
                 );
 
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
