@@ -27,13 +27,13 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// Currency to convert from.
         /// </summary>
         [MaxLength(5)]
-        public string? FromCurrency { get; set; } = string.Empty;
+        public string? FromCurrency { get; set; }
 
         /// <summary>
         /// Currency to convert to.
         /// </summary>
         [MaxLength(5)]
-        public string? ToCurrency { get; set; } = string.Empty;
+        public string? ToCurrency { get; set; }
 
         /// <summary>
         /// Minimum rate for alert.
