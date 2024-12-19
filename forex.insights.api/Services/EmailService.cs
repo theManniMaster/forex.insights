@@ -26,8 +26,9 @@ namespace forex.insights.api.Services
             }
 
             var emailTemplate = new EmailTemplate();
+            var message = emailTemplate.CreateMessage(activeAlert, fromEmail, to);
             var client = new SendGridClient(apiKey);
-            var response = await client.SendEmailAsync(emailTemplate.CreateMessage(activeAlert, fromEmail, to));
+            var response = await client.SendEmailAsync(message);
 
             if (response.IsSuccessStatusCode)
                 return;
