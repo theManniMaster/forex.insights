@@ -14,6 +14,6 @@ namespace forex.insights.api.Services.Interfaces
         /// <param name="currentRate">Current Rate.</param>
         /// <param name="to">Recipient.</param>
         /// <returns>Task.</returns>
-        Task SendAsync(ForexAlert activeAlert, double currentRate, string to);
+        Task SendAsync(ForexAlert activeAlert, decimal currentRate, string to);
     }
 }

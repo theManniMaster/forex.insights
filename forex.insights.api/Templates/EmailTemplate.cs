@@ -21,8 +21,8 @@ namespace forex.insights.api.Templates
                 new EmailAddress(from),
                 new EmailAddress(to),
                 Subject,
-                GetHtmlContent(activeAlert),
-                GetPlainTextContent(activeAlert)
+                GetPlainTextContent(activeAlert),
+                GetHtmlContent(activeAlert)
             );
         }
         

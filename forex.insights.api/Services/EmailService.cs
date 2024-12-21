@@ -14,7 +14,7 @@ namespace forex.insights.api.Services
         private readonly ILogger<INotificationService> _logger = logger;
 
         /// <inheritdoc />
-        public async Task SendAsync(ForexAlert activeAlert, double currentRate, string to)
+        public async Task SendAsync(ForexAlert activeAlert, decimal currentRate, string to)
         {
             var apiKey = _configuration.GetValue<string>("SendGridApiKey");
             var fromEmail = _configuration.GetValue<string>("SendGridFromEmail");
