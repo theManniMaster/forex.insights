@@ -23,7 +23,7 @@ class BaseClient {
      * @param method HTTP method to use.
      * @param requestData Request data to send.
      */
-    async fetchData<T>(endpoint: string, method: HttpMethod, requestData: object): Promise<T> {
+    protected async fetchData<T>(endpoint: string, method: HttpMethod, requestData: object): Promise<T> {
         // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
         return await fetch(`${this.baseUrl}/${endpoint}`, {
             method,

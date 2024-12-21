@@ -13,7 +13,7 @@ class ForexAlertClient extends BaseClient {
      * @param data Request data.
      */
     get(data: ForexAlertGetRequest) {
-        return this.fetchData<ForexAlertGetResponse>(this.endpoint, HttpMethod.Get, data);
+        return this.fetchData<ForexAlertGetResponse>(`${this.endpoint}/${data.id}`, HttpMethod.Get, data);
     }
 }
 
