@@ -5,7 +5,7 @@ interface ForexAlertSearchRequest {
     /**
      * Forex alert ids.
      */
-    ids: string[];
+    ids?: string[];
 }
 
 export type { ForexAlertSearchRequest };

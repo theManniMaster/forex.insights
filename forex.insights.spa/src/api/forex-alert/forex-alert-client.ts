@@ -28,7 +28,7 @@ class ForexAlertClient extends BaseClient {
         return this.fetchData<ForexAlertSearchResponse>(
             HttpMethod.Get,
             data,
-            `${this.endpoint}?${data.ids.length > 0 ? data.ids.map(id => `ids=${id}&`) : ""}`
+            `${this.endpoint}?${data.ids && data.ids.length > 0 ? data.ids.map(id => `ids=${id}&`) : ""}`
         );
     }
 
