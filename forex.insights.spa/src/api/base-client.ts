@@ -35,14 +35,14 @@ class BaseClient {
         }).then(async (response) => {
             // fetch doesn't fail on 404.
             if (!response.ok) {
-                console.log("404");
+                console.log("404", endpoint);
                 return null;
             }
             else {
                 return await response.json();
             }
         }).catch((error) => {
-            console.log(error);
+            console.log(error, endpoint);
             return null;
         });
     }
