@@ -51,7 +51,6 @@ class DashboardItemCard extends Component<Props> {
     handleEdit = () => {
         //const { alert } = this.props;
 
-        
     };
 
     handleDelete = () => {

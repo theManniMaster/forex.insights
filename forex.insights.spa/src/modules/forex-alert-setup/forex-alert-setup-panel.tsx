@@ -1,23 +1,28 @@
 import { Component, createRef } from "react";
-import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
+import { Button, Col, Form, FormInstance, Input, notification, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
 import { CurrencyPairSelector } from "./components";
 import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
 import { AlertItem } from "./enums";
-import { useNavigate } from "react-router-dom";
+import { withNavigation, WithNavigation } from "../higher-order-components";
 
 const { Text } = Typography;
 const { Item } = Form;
 
 /**
+ * Forex alert setup panel props.
+ */
+interface Props extends WithNavigation { }
+
+/**
  * Panel for setting up forex alerts.
  */
-class ForexAlertSetupPanel extends Component {
+class ForexAlertSetupPanel extends Component<Props> {
     formRef = createRef<FormInstance>();
 
     handleFormValuesSubmit = async () => {
+        const { navigate } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
-        const navigate = useNavigate();
 
         if (!validation)
             return;
@@ -31,13 +36,19 @@ class ForexAlertSetupPanel extends Component {
                 minimumRate: validation.minimumRate    
             })
             .then(() => {
-                console.log("in then");
+                notification.success({
+                    message: "Success",
+                    description: "Alert created successfully."
+                });
 
                 this.formRef.current?.resetFields();
                 navigate("/dashboard");
             })
             .catch(() => {
-                console.log("in catch");
+                notification.error({
+                    message: "Error",
+                    description: "Couldn't create alert. Please try again."
+                });
             });
     };
 
@@ -145,4 +156,6 @@ class ForexAlertSetupPanel extends Component {
     }
 }
 
-export default ForexAlertSetupPanel;
+const ForexAlertSetupPanelWithNavigation = withNavigation(ForexAlertSetupPanel);
+
+export default ForexAlertSetupPanelWithNavigation;
