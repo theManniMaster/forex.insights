@@ -34,16 +34,19 @@ class BaseClient {
             mode: "cors"
         }).then(async (response) => {
             // fetch doesn't fail on 404.
-            if (!response.ok) {
-                console.log("404", endpoint);
-                return null;
-            }
-            else {
-                return await response.json();
-            }
+            if (!response.ok)
+                throw new Error();
+
+            /**
+             * some responses will not have a body (Delete and Patch in our case).
+             * so we need to check if the response has a body before trying to parse it.
+             * Calling .text() gets the body of the response and returns a promise that resolves to a string.
+             */
+            return response.text().then((text) => {
+                return text ? JSON.parse(text) : {};
+            });
         }).catch((error) => {
-            console.log(error, endpoint);
-            return null;
+            throw new Error(error);
         });
     }
 }

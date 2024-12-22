@@ -2,8 +2,9 @@ import { Component, createRef } from "react";
 import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
 import styles from "./styles/forex-alert-setup-panel.module.less";
 import { CurrencyPairSelector } from "./components";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
+import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
 import { AlertItem } from "./enums";
+import { useNavigate } from "react-router-dom";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -16,21 +17,28 @@ class ForexAlertSetupPanel extends Component {
 
     handleFormValuesSubmit = async () => {
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
+        const navigate = useNavigate();
 
         if (!validation)
             return;
 
-        // TODO: use enum or maybe typed version of store.
-        const alert: ForexAlertGetResponse = {
-            id: "",
-            frequency: validation.frequency,
-            fromCurrency: validation.fromCurrency,
-            toCurrency: validation.toCurrency,
-            contactMethod: validation.contactMethod,
-            minimumRate: validation.minimumRate
-        };
+        apiClient.forexAlert
+            .post({
+                frequency: validation.frequency,
+                fromCurrency: validation.fromCurrency,
+                toCurrency: validation.toCurrency,
+                contactMethod: validation.contactMethod,
+                minimumRate: validation.minimumRate    
+            })
+            .then(() => {
+                console.log("in then");
 
-        console.log(alert);
+                this.formRef.current?.resetFields();
+                navigate("/dashboard");
+            })
+            .catch(() => {
+                console.log("in catch");
+            });
     };
 
     render() {
@@ -44,6 +52,10 @@ class ForexAlertSetupPanel extends Component {
                     <Form<ForexAlertGetResponse>
                         ref={this.formRef}
                         onFinish={this.handleFormValuesSubmit}
+                        initialValues={{
+                            [AlertItem.frequency]: NotificationFrequency.once,
+                            [AlertItem.contactMethod]: ContactMethod.email
+                        }}
                     >
                         <Row className={styles.itemContainer}>
                             <Col span={24} md={8}>

@@ -1,6 +1,6 @@
 import { Component } from "react";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { Card, Col, Row, Tag, Typography } from "antd";
+import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
+import { Card, Col, notification, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
 import { countries } from "../../forex-alert-setup";
@@ -12,6 +12,7 @@ const { Text } = Typography;
  */
 interface Props {
     alert: ForexAlertGetResponse;
+    reloadAlerts: () => void;
 }
 
 /**
@@ -47,9 +48,34 @@ class DashboardItemCard extends Component<Props> {
         };
     };
 
-    handleEdit = () => { };
+    handleEdit = () => {
+        //const { alert } = this.props;
 
-    handleDelete = () => { };
+        
+    };
+
+    handleDelete = () => {
+        const { alert, reloadAlerts } = this.props;
+
+        apiClient.forexAlert
+            .delete({
+                id: alert.id
+            })
+            .then(() => {
+                notification.success({
+                    message: "Success",
+                    description: "Alert deleted successfully."
+                });
+
+                reloadAlerts();
+            })
+            .catch(() => {
+                notification.error({
+                    message: "Error",
+                    description: "Couldn't delete. Please try again."
+                });
+            });
+    };
 
     render() {
         const { alert } = this.props;
