@@ -1,14 +1,9 @@
 import { ContactMethod, NotificationFrequency } from "../enums";
 
 /**
- * Forex alert get response.
+ * Forex alert post request.
  */
-interface ForexAlertGetResponse {
-    /**
-     * Unique Identifier.
-     */
-    id: string;
-
+interface ForexAlertPostRequest {
     /**
      * Notification frequency.
      */
@@ -33,11 +28,6 @@ interface ForexAlertGetResponse {
      * The contact method.
      */
     contactMethod: ContactMethod;
-    
-    /**
-     * Next alert time.
-     */
-    nextAlertTime?: string;
 }
 
-export type { ForexAlertGetResponse };
+export type { ForexAlertPostRequest };

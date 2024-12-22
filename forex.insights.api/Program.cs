@@ -9,6 +9,8 @@ namespace forex.insights.api
 {
     public class Program
     {
+        private const string corsPolicyName = "corsPolicy";
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +28,23 @@ namespace forex.insights.api
             services.AddScoped<IForexAlertService, ForexAlertService>();
             services.AddKeyedScoped<INotificationService, EmailService>(TemplateType.Email);
 
+            // Add Cors.
+            var allowedOrigin = (builder.Configuration["AllowedFrontendOrigin"] ?? "").ToLower();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicyName, policy =>
+                {
+                    policy.WithOrigins(allowedOrigin)
+                        .SetIsOriginAllowed(origin => origin.ToLower().Equals(allowedOrigin))
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
+
+            app.UseCors(corsPolicyName);
 
             // Configure the HTTP request pipeline.
             app.UseHttpsRedirection();
