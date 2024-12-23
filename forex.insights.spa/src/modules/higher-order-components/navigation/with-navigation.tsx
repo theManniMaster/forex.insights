@@ -4,7 +4,7 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
  * Higher Order Component to add navigation.
  * @param Component
  */
-function withNavigation<T extends WithNavigation>(Component: React.ComponentType<T>) {
+function withNavigation<T>(Component: React.ComponentType<T & WithNavigation>) {
     return (props: T) => {
         const navigate = useNavigate();
 

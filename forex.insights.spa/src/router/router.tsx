@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { ErrorPage } from "../modules/ui";
 import { DashboardPanel, ForexAlertSetupPanel } from "../modules";
-import { Routes } from ".";
+import { RouteParams, Routes } from ".";
 import { RootOutlet } from "./root-outlet";
 
 /**
@@ -25,6 +25,10 @@ const router = createBrowserRouter([
                 path: Routes.create,
                 element: <ForexAlertSetupPanel />
             },
+            {
+                path: `${Routes.edit}/:${RouteParams.id}`,
+                element: <ForexAlertSetupPanel />
+            }
         ]
     }
 ]);
