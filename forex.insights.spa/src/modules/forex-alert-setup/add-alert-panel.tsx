@@ -71,7 +71,6 @@ class AddAlertPanel extends Component<Props, State> {
                         <Spin className={styles.spin} />
                         :
                         <ForexAlertSetupForm
-                            loading={loading}
                             submitButtonLabel="Create"
                             onSubmit={this.addAlert}
                         />

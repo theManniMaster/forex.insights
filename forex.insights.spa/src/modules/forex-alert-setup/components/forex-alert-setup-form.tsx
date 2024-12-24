@@ -13,7 +13,6 @@ const { Item } = Form;
  */
 interface Props {
     alert?: ForexAlertGetResponse;
-    loading: boolean;
     submitButtonLabel: string;
     onSubmit: (alert: ForexAlertGetResponse) => void;
 }
@@ -42,7 +41,7 @@ class ForexAlertSetupForm extends Component<Props> {
     };
 
     render() {
-        const { loading, submitButtonLabel, alert } = this.props;
+        const { submitButtonLabel, alert } = this.props;
 
         return (
             <Row justify="center" className={styles.container}>
@@ -53,7 +52,6 @@ class ForexAlertSetupForm extends Component<Props> {
                 <Col span={24}>
                     <Form<ForexAlertGetResponse>
                         ref={this.formRef}
-                        disabled={loading}
                         onFinish={this.handleFormValuesSubmit}
                         initialValues={
                             alert ?? {
@@ -140,7 +138,6 @@ class ForexAlertSetupForm extends Component<Props> {
                         className={styles.button}
                         type="primary"
                         onClick={() => this.formRef.current?.submit()}
-                        loading={loading}
                     >
                         {submitButtonLabel}
                     </Button>

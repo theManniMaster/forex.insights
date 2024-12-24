@@ -89,7 +89,6 @@ class EditAlertPanel extends Component<Props, State> {
                         :
                         <ForexAlertSetupForm
                             alert={alert}
-                            loading={loading}
                             submitButtonLabel="Edit"
                             onSubmit={this.editAlert}
                         />
