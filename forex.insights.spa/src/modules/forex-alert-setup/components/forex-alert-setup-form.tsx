@@ -25,14 +25,14 @@ class ForexAlertSetupForm extends Component<Props> {
     formRef = createRef<FormInstance>();
 
     handleFormValuesSubmit = async () => {
-        const { onSubmit } = this.props;
+        const { onSubmit, alert } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
         if (!validation)
             return;
 
         onSubmit({
-            id: "",
+            id: alert?.id ?? "",
             frequency: validation.frequency,
             fromCurrency: validation.fromCurrency,
             toCurrency: validation.toCurrency,
