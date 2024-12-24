@@ -1,14 +1,15 @@
-import { Params, useParams } from "react-router-dom";
+import { Params, useParams, useNavigate, NavigateFunction } from "react-router-dom";
 
 /**
  * Higher Order Component to add routing.
  * @param Component
  */
-function withRouting<T>(Component: React.ComponentType<T & WithRouting>) {
-    return (props: T) => {
+function withRouting<T extends WithRouting>(Component: React.ComponentType<T>) {
+    return (props: Omit<T, keyof WithRouting>) => {
         const params = useParams();
+        const navigate = useNavigate();
 
-        return <Component {...props} params={params} />;
+        return <Component {...props as T} params={params} navigate={navigate} />
     };
 }
 
@@ -20,6 +21,11 @@ interface WithRouting {
      * Route params.
      */
     params: Params;
+
+    /**
+     * Navigation function.
+     */
+    navigate: NavigateFunction;
 }
 
 export type { WithRouting };

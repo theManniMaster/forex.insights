@@ -4,7 +4,7 @@ import styles from "./styles/forex-alert-setup-panel.module.less";
 import { CurrencyPairSelector } from "./components";
 import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
 import { AlertItem } from "./enums";
-import { withNavigation, WithNavigation, WithRouting, withRouting } from "../higher-order-components";
+import { WithRouting, withRouting } from "../higher-order-components";
 import { RouteParams, Routes } from "../../router";
 
 const { Text } = Typography;
@@ -13,7 +13,7 @@ const { Item } = Form;
 /**
  * Forex alert setup panel props.
  */
-interface Props extends WithNavigation, WithRouting { }
+interface Props extends WithRouting { }
 
 /**
  * Forex alert setup panel state.
@@ -203,6 +203,6 @@ class ForexAlertSetupPanel extends Component<Props, State> {
     }
 }
 
-const ComponentWithNavigationAndRouting = withRouting(withNavigation(ForexAlertSetupPanel));
+const ComponentWithRouting = withRouting(ForexAlertSetupPanel);
 
-export default ComponentWithNavigationAndRouting;
+export default ComponentWithRouting;

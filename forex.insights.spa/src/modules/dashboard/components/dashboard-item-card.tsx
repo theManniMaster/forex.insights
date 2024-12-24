@@ -4,15 +4,15 @@ import { Card, Col, notification, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
 import { countries } from "../../forex-alert-setup";
-import { withNavigation, WithNavigation } from "../../higher-order-components";
 import { Routes } from "../../../router";
+import { withRouting, WithRouting } from "../../higher-order-components";
 
 const { Text } = Typography;
 
 /**
  * Dashboard item card props.
  */
-interface Props extends WithNavigation {
+interface Props extends WithRouting {
     alert: ForexAlertGetResponse;
     reloadAlerts: () => void;
 }
@@ -140,6 +140,6 @@ class DashboardItemCard extends Component<Props> {
     }
 }
 
-const ComponentWithNavigation = withNavigation(DashboardItemCard);
+const ComponentWithRouting = withRouting(DashboardItemCard);
 
-export default ComponentWithNavigation;
+export default ComponentWithRouting;
