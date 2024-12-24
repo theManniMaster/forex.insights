@@ -1,39 +1,48 @@
 import { Component, createRef } from "react";
+import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
 import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
-import styles from "./styles/forex-alert-setup-panel.module.less";
-import { CurrencyPairSelector } from "./components";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../api";
-import { AlertItem } from "./enums";
+import CurrencyPairSelector from "./currency-pair-selector";
+import { AlertItem } from "../enums";
+import styles from "./styles/forex-alert-setup-form.module.less";
 
 const { Text } = Typography;
 const { Item } = Form;
 
 /**
- * Panel for setting up forex alerts.
+ * Props for the forex alert setup form.
  */
-class ForexAlertSetupPanel extends Component {
+interface Props {
+    alert?: ForexAlertGetResponse;
+    submitButtonLabel: string;
+    onSubmit: (alert: ForexAlertGetResponse) => void;
+}
+
+/**
+ * Form for setting up forex alerts.
+ */
+class ForexAlertSetupForm extends Component<Props> {
     formRef = createRef<FormInstance>();
 
     handleFormValuesSubmit = async () => {
+        const { onSubmit, alert } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
         if (!validation)
             return;
 
-        // TODO: use enum or maybe typed version of store.
-        const alert: ForexAlertGetResponse = {
-            id: "",
+        onSubmit({
+            id: alert?.id ?? "",
             frequency: validation.frequency,
             fromCurrency: validation.fromCurrency,
             toCurrency: validation.toCurrency,
             contactMethod: validation.contactMethod,
             minimumRate: validation.minimumRate
-        };
-
-        console.log(alert);
+        });
     };
 
     render() {
+        const { submitButtonLabel, alert } = this.props;
+
         return (
             <Row justify="center" className={styles.container}>
                 <Col>
@@ -44,6 +53,12 @@ class ForexAlertSetupPanel extends Component {
                     <Form<ForexAlertGetResponse>
                         ref={this.formRef}
                         onFinish={this.handleFormValuesSubmit}
+                        initialValues={
+                            alert ?? {
+                                [AlertItem.frequency]: NotificationFrequency.once,
+                                [AlertItem.contactMethod]: ContactMethod.email
+                            }
+                        }
                     >
                         <Row className={styles.itemContainer}>
                             <Col span={24} md={8}>
@@ -90,7 +105,6 @@ class ForexAlertSetupPanel extends Component {
                                     <Input
                                         type="number"
                                         placeholder="Enter amount"
-                                        suffix="$"
                                     />
                                 </Item>
                             </Col>
@@ -125,7 +139,7 @@ class ForexAlertSetupPanel extends Component {
                         type="primary"
                         onClick={() => this.formRef.current?.submit()}
                     >
-                        Create
+                        {submitButtonLabel}
                     </Button>
                 </Col>
             </Row>
@@ -133,4 +147,4 @@ class ForexAlertSetupPanel extends Component {
     }
 }
 
-export default ForexAlertSetupPanel;
+export default ForexAlertSetupForm;

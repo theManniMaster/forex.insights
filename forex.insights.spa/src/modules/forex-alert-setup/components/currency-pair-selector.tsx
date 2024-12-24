@@ -16,7 +16,8 @@ class CurrencyPairSelector extends Component {
         return <Row>
             <Col span={12}>
                 <Item
-                    name={AlertItem.toCurrency}
+                    name={AlertItem.fromCurrency}
+                    rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
                         size="large"
@@ -39,7 +40,8 @@ class CurrencyPairSelector extends Component {
 
             <Col span={12}>
                 <Item
-                    name={AlertItem.fromCurrency}
+                    name={AlertItem.toCurrency}
+                    rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
                         size="large"

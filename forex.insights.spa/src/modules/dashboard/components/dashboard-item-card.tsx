@@ -1,17 +1,20 @@
 import { Component } from "react";
-import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { Card, Col, Row, Tag, Typography } from "antd";
+import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
+import { Card, Col, notification, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
 import { countries } from "../../forex-alert-setup";
+import { Routes } from "../../../router";
+import { withRouting, WithRouting } from "../../higher-order-components";
 
 const { Text } = Typography;
 
 /**
  * Dashboard item card props.
  */
-interface Props {
+interface Props extends WithRouting {
     alert: ForexAlertGetResponse;
+    reloadAlerts: () => void;
 }
 
 /**
@@ -47,9 +50,34 @@ class DashboardItemCard extends Component<Props> {
         };
     };
 
-    handleEdit = () => { };
+    handleEdit = () => {
+        const { alert, navigate } = this.props;
 
-    handleDelete = () => { };
+        navigate(`${Routes.edit}/${alert.id}`);
+    };
+
+    handleDelete = () => {
+        const { alert, reloadAlerts } = this.props;
+
+        apiClient.forexAlert
+            .delete({
+                id: alert.id
+            })
+            .then(() => {
+                notification.success({
+                    message: "Success",
+                    description: "Alert deleted successfully."
+                });
+
+                reloadAlerts();
+            })
+            .catch(() => {
+                notification.error({
+                    message: "Error",
+                    description: "Couldn't delete. Please try again."
+                });
+            });
+    };
 
     render() {
         const { alert } = this.props;
@@ -112,4 +140,6 @@ class DashboardItemCard extends Component<Props> {
     }
 }
 
-export default DashboardItemCard;
+const ComponentWithRouting = withRouting(DashboardItemCard);
+
+export default ComponentWithRouting;
