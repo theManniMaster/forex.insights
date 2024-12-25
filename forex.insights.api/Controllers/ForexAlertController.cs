@@ -1,6 +1,7 @@
 ﻿using forex.insights.api.DataModels.ForexAlerts;
 using forex.insights.api.Entities.ForexAlerts;
 using forex.insights.api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace forex.insights.api.Controllers
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ForexAlertController(IForexAlertService forexAlertService) : ControllerBase
     {
         private readonly IForexAlertService _forexAlertService = forexAlertService;
