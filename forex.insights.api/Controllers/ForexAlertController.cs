@@ -4,6 +4,7 @@ using forex.insights.api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Security.Claims;
 
 namespace forex.insights.api.Controllers
 {
@@ -15,6 +16,7 @@ namespace forex.insights.api.Controllers
     [Authorize]
     public class ForexAlertController(IForexAlertService forexAlertService) : ControllerBase
     {
+        private const int _maxAlertCount = 8;
         private readonly IForexAlertService _forexAlertService = forexAlertService;
 
         /// <summary>
@@ -27,9 +29,14 @@ namespace forex.insights.api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<ForexAlertGetResponse>> GetAsync([FromRoute] ForexAlertGetRequest request)
         {
+            var userId = GetUserId();
+
+            if (!userId.HasValue)
+                return Unauthorized();
+
             var forexAlert = await _forexAlertService.GetAsync(request.Id);
 
-            if (forexAlert == default)
+            if (forexAlert == default || forexAlert.UserId != userId)
                 return NotFound();
 
             return new ForexAlertGetResponse(forexAlert);
@@ -45,12 +52,17 @@ namespace forex.insights.api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult<ForexAlertSearchResponse>> SearchAsync([FromQuery] ForexAlertSearchRequest request)
         {
+            var userId = GetUserId();
+
+            if (!userId.HasValue)
+                return Unauthorized();
+
             IEnumerable<ForexAlert> forexAlerts;
 
             if (request.Ids.Any())
-                forexAlerts = await _forexAlertService.GetAsync(request.Ids);
-            else 
-                forexAlerts = await _forexAlertService.GetAllAsync();
+                forexAlerts = await _forexAlertService.GetAsync(request.Ids, userId.Value);
+            else
+                forexAlerts = await _forexAlertService.GetAllAsync(userId.Value);
 
             if (!forexAlerts.Any())
                 return NotFound();
@@ -68,17 +80,27 @@ namespace forex.insights.api.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<ForexAlertPostResponse>> PostAsync([FromBody] ForexAlertPostRequest request)
         {
+            var userId = GetUserId();
+
+            if (!userId.HasValue)
+                return Unauthorized();
+
             var forexAlert = new ForexAlert
             {
                 Frequency = request.Frequency,
                 FromCurrency = request.FromCurrency,
                 ToCurrency = request.ToCurrency,
                 MinimumRate = request.MinimumRate,
-                ContactMethod = request.ContactMethod
+                ContactMethod = request.ContactMethod,
+                UserId = userId.Value
             };
 
-            if (await _forexAlertService.Exists(forexAlert.FromCurrency, forexAlert.ToCurrency))
-                return BadRequest($"{forexAlert.FromCurrency} to {forexAlert.ToCurrency} alert already exists.");
+            var existingAlerts = await _forexAlertService.GetAllAsync(userId.Value);
+
+            if (existingAlerts.Count() >= _maxAlertCount)
+                return BadRequest($"You have reached the maximum limit of {_maxAlertCount} alerts.");
+            else if (existingAlerts.Any(alert => alert.FromCurrency == forexAlert.FromCurrency && alert.ToCurrency == forexAlert.ToCurrency))
+                return BadRequest($"Alert for {forexAlert.FromCurrency} to {forexAlert.ToCurrency} already exists.");
 
             await _forexAlertService.InsertAsync(forexAlert);
 
@@ -95,9 +117,14 @@ namespace forex.insights.api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> PatchAsync([FromBody] ForexAlertPatchRequest request)
         {
+            var userId = GetUserId();
+            
+            if (!userId.HasValue)
+                return Unauthorized();
+
             var existingAlert = await _forexAlertService.GetAsync(request.Id);
 
-            if (existingAlert == default)
+            if (existingAlert == default || existingAlert.UserId != userId.Value)
                 return NotFound();
 
             existingAlert.Frequency = request.Frequency ?? existingAlert.Frequency;
@@ -121,14 +148,37 @@ namespace forex.insights.api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> DeleteAsync([FromRoute] ForexAlertDeleteRequest request)
         {
+            var userId = GetUserId();
+
+            if (!userId.HasValue)
+                return Unauthorized();
+
             var existingAlert = await _forexAlertService.GetAsync(request.Id);
 
-            if (existingAlert == default)
+            if (existingAlert == default || existingAlert.UserId != userId.Value)
                 return NotFound();
 
             await _forexAlertService.DeleteAsync(existingAlert);
 
             return Ok();
         }
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Get current user's Id.
+        /// </summary>
+        /// <returns>User Id, if exists.</returns>
+        private Guid? GetUserId()
+        {
+            var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (!string.IsNullOrEmpty(userIdClaim) && Guid.TryParse(userIdClaim, out var userId))
+                return userId;
+
+            return null;
+        }
+
+        #endregion
     }
 }

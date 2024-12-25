@@ -19,15 +19,15 @@ namespace forex.insights.api.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ForexAlert>> GetAsync(IEnumerable<Guid> ids)
+        public async Task<IEnumerable<ForexAlert>> GetAsync(IEnumerable<Guid> ids, Guid userId)
         {
-            return await _dbContext.ForexAlerts.Where(f => ids.Contains(f.Id)).ToListAsync();
+            return await _dbContext.ForexAlerts.Where(f => f.UserId == userId && ids.Contains(f.Id)).ToListAsync();
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ForexAlert>> GetAllAsync()
+        public async Task<IEnumerable<ForexAlert>> GetAllAsync(Guid userId)
         {
-            return await _dbContext.ForexAlerts.ToListAsync();
+            return await _dbContext.ForexAlerts.Where(f => f.UserId == userId).ToListAsync();
         }
 
         /// <inheritdoc />
@@ -49,12 +49,6 @@ namespace forex.insights.api.Services
         {
             _dbContext.ForexAlerts.Remove(toBeDeleted);
             await _dbContext.SaveChangesAsync();
-        }
-
-        /// <inheritdoc />
-        public async Task<bool> Exists(string fromCurrency, string toCurrency)
-        {
-            return await _dbContext.ForexAlerts.AnyAsync(alert => alert.FromCurrency == fromCurrency && alert.ToCurrency == toCurrency);
         }
     }
 }

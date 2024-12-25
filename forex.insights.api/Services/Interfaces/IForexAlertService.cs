@@ -18,14 +18,16 @@ namespace forex.insights.api.Services.Interfaces
         /// Search ForexAlerts by Ids.
         /// </summary>
         /// <param name="ids">Alert Ids.</param>
+        /// <param name="userId">User Id.</param>
         /// <returns>Requested Alerts.</returns>
-        Task<IEnumerable<ForexAlert>> GetAsync(IEnumerable<Guid> ids);
+        Task<IEnumerable<ForexAlert>> GetAsync(IEnumerable<Guid> ids, Guid userId);
 
         /// <summary>
         /// Gets all ForexAlerts from the database.
         /// </summary>
+        /// <param name="userId">User Id.</param>
         /// <returns>Alerts Data.</returns>
-        Task<IEnumerable<ForexAlert>> GetAllAsync();
+        Task<IEnumerable<ForexAlert>> GetAllAsync(Guid userId);
 
         /// <summary>
         /// Inserts a new ForexAlert into the database.
@@ -47,13 +49,5 @@ namespace forex.insights.api.Services.Interfaces
         /// <param name="toBeDeleted">To be deleted Alert.</param>
         /// <returns>Task.</returns>
         Task DeleteAsync(ForexAlert toBeDeleted);
-
-        /// <summary>
-        /// Checks if an alert exists for the given currency pair.
-        /// </summary>
-        /// <param name="fromCurrency">From currency.</param>
-        /// <param name="toCurrency">To currency.</param>
-        /// <returns>True if exists, false otherwise.</returns>
-        Task<bool> Exists(string fromCurrency, string toCurrency);
     }
 }

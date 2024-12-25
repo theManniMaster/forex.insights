@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using forex.insights.api.Data;
 
@@ -11,9 +12,11 @@ using forex.insights.api.Data;
 namespace forex.insights.api.Migrations
 {
     [DbContext(typeof(ForexAlertDbContext))]
-    partial class ForexAlertDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241225070100_Added_UserId_To_Alerts")]
+    partial class Added_UserId_To_Alerts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
