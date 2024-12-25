@@ -18,6 +18,12 @@ namespace forex.insights.api.Entities.ForexAlerts
         public Guid Id { get; set; }
 
         /// <summary>
+        /// User identifier.
+        /// </summary>
+        [Required]
+        public Guid UserId { get; set; }
+
+        /// <summary>
         /// Notification frequency.
         /// </summary>
         [Required]
