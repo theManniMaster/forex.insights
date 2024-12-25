@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { ErrorPage } from "../modules/ui";
-import { AddAlertPanel, DashboardPanel, EditAlertPanel } from "../modules";
+import { AddAlertPanel, DashboardPanel, EditAlertPanel, Login } from "../modules";
 import { RouteParams, Routes } from ".";
-import { RootOutlet } from "./root-outlet";
+import { ProtectedRoute } from "./protected-route";
+import { ErrorPage } from "./error-page";
 
 /**
  * React browser router for defining UI paths.
@@ -10,24 +10,32 @@ import { RootOutlet } from "./root-outlet";
 const router = createBrowserRouter([
     {
         path: Routes.root,
-        element: <RootOutlet />,
         errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
-                element: <Navigate to={Routes.dashboard} replace />, // TODO: update this to include login page as well.
+                element: <Navigate to={Routes.dashboard} replace />,
             },
             {
-                path: Routes.dashboard,
-                element: <DashboardPanel />,
+                path: Routes.login,
+                element: <Login />
             },
             {
-                path: Routes.create,
-                element: <AddAlertPanel />
-            },
-            {
-                path: `${Routes.edit}/:${RouteParams.id}`,
-                element: <EditAlertPanel />
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: Routes.dashboard,
+                        element: <DashboardPanel />,
+                    },
+                    {
+                        path: Routes.create,
+                        element: <AddAlertPanel />
+                    },
+                    {
+                        path: `${Routes.edit}/:${RouteParams.id}`,
+                        element: <EditAlertPanel />
+                    }
+                ]
             }
         ]
     }
