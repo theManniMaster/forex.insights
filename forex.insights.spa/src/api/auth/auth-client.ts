@@ -1,6 +1,6 @@
 import { HttpMethod } from "../enums";
 import Token from "../token";
-import { LoginRequest } from "./interfaces";
+import { LoginRequest, RegisterRequest } from "./interfaces";
 
 /**
  * Api client for auth.
@@ -63,6 +63,14 @@ class AuthClient {
     }
 
     /**
+     * Register a new user.
+     * @param data Request data.
+     */
+    register(data: RegisterRequest) {
+        return this.fetchData(data, "register");
+    }
+
+    /**
      * Refresh token.
      */
     refreshToken() {
@@ -87,8 +95,10 @@ class AuthClient {
                 throw new Error();
 
             await response.text().then((text) => {
-                this.getToken().parse(text);
-                this.addToLocalStorage();
+                if (text) {
+                    this.getToken().parse(text);
+                    this.addToLocalStorage();
+                }
             })
 
         }).catch((error) => {
