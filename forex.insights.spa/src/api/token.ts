@@ -46,7 +46,7 @@ class Token {
         if (!storageObject)
             return;
 
-        var parsed = JSON.parse(storageObject);
+        const parsed = JSON.parse(storageObject);
 
         if (parsed.accessToken)
             this.accessToken = parsed.accessToken;
