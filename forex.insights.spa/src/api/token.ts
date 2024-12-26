@@ -65,6 +65,9 @@ class Token {
      * @returns true if token is valid.
      */
     isValid() {
+        /**
+         * Adding a buffer to request token refresh before it actually expires.
+         */
         if (this.accessToken === "" || dayjs().subtract(this.bufferSeconds, "seconds").isAfter(this.expiry))
             return false;
 

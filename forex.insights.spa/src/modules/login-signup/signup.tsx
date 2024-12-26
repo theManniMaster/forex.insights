@@ -1,10 +1,10 @@
 import { Component, createRef } from "react";
-import styles from "./styles/login-signup.module.less";
-import { Button, Col, Form, FormInstance, Input, Row, Typography } from "antd";
-import { LoginSignupFormItem } from "./enum";
+import { withRouting, WithRouting } from "../higher-order-components";
 import Header from "./header";
+import styles from "./styles/login-signup.module.less";
+import { Button, Col, Form, FormInstance, Input, notification, Row, Typography } from "antd";
 import { apiClient } from "../../api";
-import { WithRouting, withRouting } from "../higher-order-components";
+import { LoginSignupFormItem } from "./enum";
 import { Routes } from "../../router";
 
 const { Text } = Typography;
@@ -23,9 +23,9 @@ interface State {
 }
 
 /**
- * Login component.
+ * Signup component.
  */
-class Login extends Component<Props, State> {
+class Signup extends Component<Props, State> {
     formRef = createRef<FormInstance>();
 
     constructor(props: Props) {
@@ -46,17 +46,28 @@ class Login extends Component<Props, State> {
         this.setState({ loading: true });
 
         apiClient.auth
-            .login({
+            .register({
                 email: validation[LoginSignupFormItem.username],
                 password: validation[LoginSignupFormItem.password]
             })
             .then(() => {
-                navigate(Routes.dashboard);
+                notification.success({
+                    message: "Success",
+                    description: "You have successfully registered. Please log in to continue."
+                })
+
+                navigate(Routes.login);
             })
             .catch(() => {
 
             })
             .finally(() => this.setState({ loading: false }));
+    };
+
+    validateConfirmPasswordField = (value: string) => {
+        const fieldValue = this.formRef.current?.getFieldValue(LoginSignupFormItem.password);
+
+        return value === fieldValue ? Promise.resolve() : Promise.reject();
     };
 
     render() {
@@ -71,7 +82,7 @@ class Login extends Component<Props, State> {
                 <Row justify="center">
 
                     <Col span={24}>
-                        <Text className={styles.header}>Enter your details to log in.</Text>
+                        <Text className={styles.header}>Enter your details to sign up.</Text>
                     </Col>
 
                     <Col span={24} className={styles.formContainer}>
@@ -95,6 +106,22 @@ class Login extends Component<Props, State> {
                             >
                                 <Input type="password" />
                             </Item>
+
+                            <Item
+                                name={LoginSignupFormItem.confirmPassword}
+                                label="Confirm Password"
+                                rules={[
+                                    {
+                                        required: true, message: "Please enter password again to confirm."
+                                    },
+                                    {
+                                        validator: (_, value) => this.validateConfirmPasswordField(value),
+                                        message: "Passwords do not match."
+                                    }
+                                ]}
+                            >
+                                <Input type="password" />
+                            </Item>
                         </Form>
                     </Col>
 
@@ -107,21 +134,21 @@ class Login extends Component<Props, State> {
                             onClick={() => this.formRef.current?.submit()}
                             loading={loading}
                         >
-                            Login
+                            Continue
                         </Button>
                     </Col>
                 </Row>
 
                 <Row justify="center" align="middle">
                     <Col span={24}>
-                        <Text className={styles.noAccountText}>Don't have an account?</Text>
+                        <Text className={styles.noAccountText}>Already have an account?</Text>
                     </Col>
                     <Col>
                         <Button
                             type="text"
-                            onClick={() => navigate(Routes.register)}
+                            onClick={() => navigate(Routes.login)}
                         >
-                            Sign up.
+                            Log in.
                         </Button>
                     </Col>
                 </Row>
@@ -130,6 +157,6 @@ class Login extends Component<Props, State> {
     }
 }
 
-const ComponentWithRouting = withRouting(Login);
+const ComponentWithRouting = withRouting(Signup);
 
 export default ComponentWithRouting;

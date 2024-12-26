@@ -1,7 +1,6 @@
 import { Component } from "react";
 import { Button, Col, Row, Typography } from "antd";
 import styles from "./styles/error-page.module.less";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const { Text } = Typography;
@@ -22,7 +21,6 @@ class ErrorPage extends Component {
                     <Button
                         type="primary"
                         className={styles.button}
-                        icon={<ArrowLeftOutlined />}
                     >
                         Go Home
                     </Button>
