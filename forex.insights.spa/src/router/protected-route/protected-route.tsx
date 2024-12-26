@@ -1,17 +1,16 @@
 import { Component } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { Routes } from "../enum";
+import { token } from "../../api";
 
 /**
  * Parent component for routes that require login.
  */
 class ProtectedRoute extends Component {
     render() {
-        const token = localStorage.getItem("token");
-
-        // update logic.
-
-        return (token ? <Outlet /> : <Navigate to={Routes.login} replace />);
+        return (
+            token.isValid() ? <Outlet /> : <Navigate to={Routes.login} replace />
+        );
     }
 }
 

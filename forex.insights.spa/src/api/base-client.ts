@@ -1,5 +1,5 @@
 import { HttpMethod } from "./enums";
-
+import token from "./token";
 
 /**
  * Base client class for all API clients.
@@ -28,7 +28,8 @@ class BaseClient {
         return await fetch(`${this.baseUrl}/${endpoint}`, {
             method,
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token.accessToken}`
             },
             body: method !== HttpMethod.Get ? JSON.stringify(requestData) : undefined,
             mode: "cors"

@@ -3,18 +3,46 @@ import styles from "./styles/login.module.less";
 import { Button, Col, Form, FormInstance, Input, Row, Typography } from "antd";
 import { LoginSignupFormItem } from "./enum";
 import Header from "./header";
+import { apiClient, token } from "../../api";
+import { WithRouting, withRouting } from "../higher-order-components";
+import { Routes } from "../../router";
 
 const { Text } = Typography;
 const { Item } = Form;
 
 /**
+ * Login component props.
+ */
+interface Props extends WithRouting { }
+
+/**
  * Login component.
  */
-class Login extends Component {
+class Login extends Component<Props> {
     formRef = createRef<FormInstance>();
 
-    handleFormValuesSubmit = () => {
+    handleFormValuesSubmit = async () => {
+        const { navigate } = this.props;
+        const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
+        if (!validation)
+            return;
+
+        apiClient.auth
+            .login({
+                email: validation[LoginSignupFormItem.username],
+                password: validation[LoginSignupFormItem.password]
+            })
+            .then((response) => {
+                token.setToken(response);                
+                localStorage.setItem(token.key, token.getStringified());
+
+                navigate(Routes.dashboard);
+            })
+            .catch(() => {
+                token.clear();
+                localStorage.removeItem(token.key);
+            });
     };
 
     render() {
@@ -38,6 +66,7 @@ class Login extends Component {
                             <Item
                                 name={LoginSignupFormItem.username}
                                 label="Email"
+                                rules={[{ required: true, message: "Please enter your email." }]}
                             >
                                 <Input />
                             </Item>
@@ -45,8 +74,9 @@ class Login extends Component {
                             <Item
                                 name={LoginSignupFormItem.password}
                                 label="Password"
+                                rules={[{ required: true, message: "Please enter your password." }]}
                             >
-                                <Input />
+                                <Input type="password" />
                             </Item>
                         </Form>
                     </Col>
@@ -61,7 +91,7 @@ class Login extends Component {
 
                 <Row justify="center">
                     <Col>
-                        <Button type="primary" onClick={this.formRef.current?.submit}>Login</Button>
+                        <Button type="primary" onClick={() => this.formRef.current?.submit()}>Login</Button>
                     </Col>
                 </Row>
 
@@ -75,4 +105,6 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const ComponentWithRouting = withRouting(Login);
+
+export default ComponentWithRouting;

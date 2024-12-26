@@ -1,4 +1,5 @@
 export { default as apiClient } from "./api-client";
+export { default as token } from "./token";
 
 export { ContactMethod, NotificationFrequency } from "./forex-alert";
 export type {

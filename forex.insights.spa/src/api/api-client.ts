@@ -1,3 +1,4 @@
+import { AuthClient } from "./auth";
 import { ForexAlertClient } from "./forex-alert";
 
 /**
@@ -8,6 +9,11 @@ class ApiClient {
      * Forex alert client.
      */
     forexAlert = new ForexAlertClient();
+
+    /**
+     * Auth client.
+     */
+    auth = new AuthClient();
 }
 
 const instance = new ApiClient();
