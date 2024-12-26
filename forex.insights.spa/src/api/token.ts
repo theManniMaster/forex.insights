@@ -5,7 +5,7 @@ import dayjs, { Dayjs } from "dayjs";
  * Auth Token class.
  */
 class Token {
-    key: string = "token";
+    private bufferSeconds: number = 10;
 
     accessToken: string = "";
     refreshToken: string = "";
@@ -56,6 +56,8 @@ class Token {
 
         if (parsed.expiry)
             this.expiry = parsed.expiry;
+        else if (parsed.expiresIn)
+            this.expiry = dayjs().add(parsed.expiresIn, "seconds");
     }
 
     /**
@@ -63,13 +65,11 @@ class Token {
      * @returns true if token is valid.
      */
     isValid() {
-        if (this.accessToken === "" || dayjs().isAfter(this.expiry))
+        if (this.accessToken === "" || dayjs().subtract(this.bufferSeconds, "seconds").isAfter(this.expiry))
             return false;
 
         return true;
     }
 }
 
-const instance = new Token();
-
-export default instance;
+export default Token;

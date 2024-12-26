@@ -3,7 +3,7 @@ import styles from "./styles/login.module.less";
 import { Button, Col, Form, FormInstance, Input, Row, Typography } from "antd";
 import { LoginSignupFormItem } from "./enum";
 import Header from "./header";
-import { apiClient, token } from "../../api";
+import { apiClient } from "../../api";
 import { WithRouting, withRouting } from "../higher-order-components";
 import { Routes } from "../../router";
 
@@ -33,15 +33,11 @@ class Login extends Component<Props> {
                 email: validation[LoginSignupFormItem.username],
                 password: validation[LoginSignupFormItem.password]
             })
-            .then((response) => {
-                token.setToken(response);                
-                localStorage.setItem(token.key, token.getStringified());
-
+            .then(() => {
                 navigate(Routes.dashboard);
             })
             .catch(() => {
-                token.clear();
-                localStorage.removeItem(token.key);
+
             });
     };
 
