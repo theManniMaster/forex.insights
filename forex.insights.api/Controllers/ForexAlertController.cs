@@ -1,4 +1,5 @@
-﻿using forex.insights.api.DataModels.ForexAlerts;
+﻿using forex.insights.api.DataModels;
+using forex.insights.api.DataModels.ForexAlerts;
 using forex.insights.api.Entities.ForexAlerts;
 using forex.insights.api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -98,9 +99,9 @@ namespace forex.insights.api.Controllers
             var existingAlerts = await _forexAlertService.GetAllAsync(userId.Value);
 
             if (existingAlerts.Count() >= _maxAlertCount)
-                return BadRequest($"You have reached the maximum limit of {_maxAlertCount} alerts.");
+                return BadRequest(new ApiErrorResponse([$"You have reached the maximum limit of {_maxAlertCount} alerts."]));
             else if (existingAlerts.Any(alert => alert.FromCurrency == forexAlert.FromCurrency && alert.ToCurrency == forexAlert.ToCurrency))
-                return BadRequest($"Alert for {forexAlert.FromCurrency} to {forexAlert.ToCurrency} already exists.");
+                return BadRequest(new ApiErrorResponse([$"Alert for {forexAlert.FromCurrency} to {forexAlert.ToCurrency} already exists."]));
 
             await _forexAlertService.InsertAsync(forexAlert);
 
