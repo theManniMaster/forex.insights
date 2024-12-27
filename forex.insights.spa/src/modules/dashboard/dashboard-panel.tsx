@@ -1,11 +1,14 @@
 import { Component } from "react";
-import { Button, Row, Spin } from "antd";
+import { Button, Row, Spin, Typography } from "antd";
 import styles from "./styles/dashboard-panel.module.less";
 import { apiClient, ForexAlertGetResponse } from "../../api";
 import { DashboardItemCard, EmptyDashboard } from "./components";
 import { PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { Routes } from "../../router";
+import dayjs from "dayjs";
+
+const { Text } = Typography;
 
 /**
  * Dashboard props.
@@ -49,10 +52,29 @@ class DashboardPanel extends Component<Props, State> {
             });
     };
 
+    getGreeting = () => {
+        const hour = dayjs().hour();
+
+        if (hour >= 5 && hour < 12)
+            return "Good morning!";
+        else if (hour >= 12 && hour < 18)
+            return "Good afternoon!";
+
+        return "Good evening!";
+    }
+
     render() {
         const { alerts, loading } = this.state;
 
         return <>
+            <div className={styles.greetingContainer}>
+                <Row justify="center">
+                    <Text className={styles.greetingText}>{this.getGreeting()}</Text>
+                </Row>
+                <Row justify="center">
+                    <Text className={styles.greetingDescription}>Explore your alerts using this dashboard.</Text>
+                </Row>
+            </div>
             {
                 loading && <Spin className={styles.spin} />
             }

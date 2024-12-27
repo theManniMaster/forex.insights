@@ -1,10 +1,12 @@
 import { Component } from "react";
 import { withRouting, WithRouting } from "../higher-order-components";
 import { apiClient, ForexAlertGetResponse } from "../../api";
-import { notification, Spin } from "antd";
+import { notification, Row, Spin, Typography } from "antd";
 import { Routes } from "../../router";
 import styles from "./styles/add-edit-alert-panel.module.less";
 import { ForexAlertSetupForm } from "./components";
+
+const { Text } = Typography;
 
 /**
  * Add alert panel props.
@@ -66,6 +68,15 @@ class AddAlertPanel extends Component<Props, State> {
 
         return (
             <>
+                <div className={styles.headerContainerr}>
+                    <Row justify="center">
+                        <Text className={styles.headerText}>Add Alert.</Text>
+                    </Row>
+                    <Row justify="center">
+                        <Text className={styles.headerDescription}>Fill out this form and we'll send you a notificaiton when the conditions are met.</Text>
+                    </Row>
+                </div>
+
                 {
                     loading ?
                         <Spin className={styles.spin} />

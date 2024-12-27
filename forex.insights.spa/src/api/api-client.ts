@@ -11,16 +11,6 @@ class ApiClient {
     private token: Token;
 
     /**
-     * Auth client.
-     */
-    auth: AuthClient;
-
-    /**
-     * Forex alert client.
-     */
-    forexAlert = new ForexAlertClient(this.fetchData);
-
-    /**
      * Constructor for the base client.
      */
     constructor() {
@@ -36,7 +26,7 @@ class ApiClient {
      * @param requestData Request data to send.
      * @param endpoint Endpoint to fetch data from.
      */
-    private async fetchData<T>(method: HttpMethod, requestData: object, endpoint: string): Promise<T> {
+    private fetchData = async <T>(method: HttpMethod, requestData: object, endpoint: string): Promise<T> => {
         if (!this.token.isValid())
             this.auth.refreshToken();
 
@@ -66,6 +56,16 @@ class ApiClient {
                 throw new Error(error);
             });
     }
+
+    /**
+     * Auth client.
+     */
+    auth: AuthClient;
+
+    /**
+     * Forex alert client.
+     */
+    forexAlert = new ForexAlertClient(this.fetchData);
 }
 
 const instance = new ApiClient();

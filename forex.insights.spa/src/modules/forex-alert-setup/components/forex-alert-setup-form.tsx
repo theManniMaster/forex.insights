@@ -45,9 +45,6 @@ class ForexAlertSetupForm extends Component<Props> {
 
         return (
             <Row justify="center" className={styles.container}>
-                <Col>
-                    <Text className={styles.header}>Setup Alert.</Text>
-                </Col>
 
                 <Col span={24}>
                     <Form<ForexAlertGetResponse>
