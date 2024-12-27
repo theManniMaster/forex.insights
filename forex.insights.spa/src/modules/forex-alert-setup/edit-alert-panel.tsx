@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { withRouting, WithRouting } from "../higher-order-components";
 import { RouteParams, Routes } from "../../router";
-import { apiClient, ForexAlertGetResponse } from "../../api";
+import { apiClient, ApiErrorResponse, ForexAlertGetResponse } from "../../api";
 import { notification, Row, Spin, Typography } from "antd";
 import styles from "./styles/add-edit-alert-panel.module.less";
 import { ForexAlertSetupForm } from "./components";
@@ -71,10 +71,15 @@ class EditAlertPanel extends Component<Props, State> {
 
                 navigate(Routes.dashboard);
             })
-            .catch(() => {
+            .catch((error: ApiErrorResponse) => {
+                let description = "Couldn't update alert. Please try again.";
+
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
                 notification.error({
                     message: "Error",
-                    description: "Couldn't update alert. Please try again."
+                    description
                 });
             })
             .finally(() => this.setState({ loading: false }));
