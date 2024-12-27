@@ -94,7 +94,10 @@ class Signup extends Component<Props, State> {
                             <Item
                                 name={LoginSignupFormItem.username}
                                 label="Email"
-                                rules={[{ required: true, message: "Please enter your email." }]}
+                                rules={[
+                                    { required: true, message: "Please enter your email." },
+                                    { pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: "Invalid email format." }
+                                ]}
                             >
                                 <Input />
                             </Item>
