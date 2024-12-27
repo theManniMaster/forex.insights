@@ -1,12 +1,20 @@
-import BaseClient from "../base-client";
 import { HttpMethod } from "../enums";
 import { ForexAlertGetRequest, ForexAlertGetResponse, ForexAlertPatchRequest, ForexAlertPostRequest, ForexAlertPostResponse, ForexAlertSearchRequest, ForexAlertSearchResponse } from "./interfaces";
 
 /**
  * Api client for forex alert.
  */
-class ForexAlertClient extends BaseClient {
+class ForexAlertClient {
     private endpoint: string = "api/forexAlert";
+    private fetchData: <T>(method: HttpMethod, requestData: object, endpoint: string) => Promise<T>;
+
+    /**
+     * Constructor for the forex alert client.
+     * @param fetchData Fetch data function.
+     */
+    constructor(fetchData: <T>(method: HttpMethod, requestData: object, endpoint: string) => Promise<T>) {
+        this.fetchData = fetchData;
+    }
 
     /**
      * Get forex alerts.

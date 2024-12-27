@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { apiClient, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
+import { apiClient, ApiErrorResponse, ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
 import { Card, Col, notification, Row, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import styles from "./styles/dashboard-item-card.module.less";
@@ -71,10 +71,15 @@ class DashboardItemCard extends Component<Props> {
 
                 reloadAlerts();
             })
-            .catch(() => {
+            .catch((error: ApiErrorResponse) => {
+                let description = "Couldn't delete. Please try again.";
+
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
                 notification.error({
                     message: "Error",
-                    description: "Couldn't delete. Please try again."
+                    description
                 });
             });
     };

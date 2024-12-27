@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Row, Typography } from "antd";
-import styles from "./styles/header-styles.module.less";
+import styles from "./styles/header.module.less";
 
 const { Text } = Typography;
 

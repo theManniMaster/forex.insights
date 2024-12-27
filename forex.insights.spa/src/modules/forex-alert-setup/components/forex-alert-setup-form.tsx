@@ -32,11 +32,11 @@ class ForexAlertSetupForm extends Component<Props> {
 
         onSubmit({
             id: alert?.id ?? "",
-            frequency: validation.frequency,
-            fromCurrency: validation.fromCurrency,
-            toCurrency: validation.toCurrency,
-            contactMethod: validation.contactMethod,
-            minimumRate: validation.minimumRate
+            frequency: validation[AlertItem.frequency],
+            fromCurrency: validation[AlertItem.fromCurrency],
+            toCurrency: validation[AlertItem.toCurrency],
+            contactMethod: validation[AlertItem.contactMethod],
+            minimumRate: validation[AlertItem.minimumRate]
         });
     };
 
@@ -45,9 +45,6 @@ class ForexAlertSetupForm extends Component<Props> {
 
         return (
             <Row justify="center" className={styles.container}>
-                <Col>
-                    <Text className={styles.header}>Setup Alert.</Text>
-                </Col>
 
                 <Col span={24}>
                     <Form<ForexAlertGetResponse>

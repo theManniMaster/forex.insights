@@ -1,10 +1,12 @@
 import { Component } from "react";
 import { withRouting, WithRouting } from "../higher-order-components";
 import { RouteParams, Routes } from "../../router";
-import { apiClient, ForexAlertGetResponse } from "../../api";
-import { notification, Spin } from "antd";
+import { apiClient, ApiErrorResponse, ForexAlertGetResponse } from "../../api";
+import { notification, Row, Spin, Typography } from "antd";
 import styles from "./styles/add-edit-alert-panel.module.less";
 import { ForexAlertSetupForm } from "./components";
+
+const { Text } = Typography;
 
 /**
  * Edit alert panel props.
@@ -69,10 +71,15 @@ class EditAlertPanel extends Component<Props, State> {
 
                 navigate(Routes.dashboard);
             })
-            .catch(() => {
+            .catch((error: ApiErrorResponse) => {
+                let description = "Couldn't update alert. Please try again.";
+
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
                 notification.error({
                     message: "Error",
-                    description: "Couldn't update alert. Please try again."
+                    description
                 });
             })
             .finally(() => this.setState({ loading: false }));
@@ -83,6 +90,15 @@ class EditAlertPanel extends Component<Props, State> {
 
         return (
             <>
+                <div className={styles.headerContainerr}>
+                    <Row justify="center">
+                        <Text className={styles.headerText}>Edit Alert.</Text>
+                    </Row>
+                    <Row justify="center">
+                        <Text className={styles.headerDescription}>Modify the details of your alert and we'll update the notification settings accordingly.</Text>
+                    </Row>
+                </div>
+
                 {
                     loading ?
                         <Spin className={styles.spin} />
