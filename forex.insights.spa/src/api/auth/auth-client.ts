@@ -75,7 +75,7 @@ class AuthClient {
      * Refresh token.
      */
     refreshToken() {
-        this.fetchData({ refreshToken: this.getToken().refreshToken }, "refresh");
+        return this.fetchData({ refreshToken: this.getToken().refreshToken }, "refresh");
     }
 
     /**
@@ -84,7 +84,7 @@ class AuthClient {
      * @param endpoint Endpoint to fetch data from.
      */
     private async fetchData(requestData: object, endpoint: string): Promise<void> {
-        return await fetch(`${this.baseUrl}/${endpoint}`, {
+        return fetch(`${this.baseUrl}/${endpoint}`, {
             method: HttpMethod.Post,
             headers: {
                 "Content-Type": "application/json"

@@ -28,7 +28,7 @@ class ApiClient {
      */
     private fetchData = async <T>(method: HttpMethod, requestData: object, endpoint: string): Promise<T> => {
         if (!this.token.isValid())
-            this.auth.refreshToken();
+            await this.auth.refreshToken();
 
         // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
         return await fetch(`${this.baseUrl}/${endpoint}`, {
