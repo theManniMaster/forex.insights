@@ -3,7 +3,7 @@ import { withRouting, WithRouting } from "../higher-order-components";
 import Header from "./header";
 import styles from "./styles/login-signup.module.less";
 import { Button, Col, Form, FormInstance, Input, notification, Row, Typography } from "antd";
-import { apiClient } from "../../api";
+import { apiClient, ApiErrorResponse } from "../../api";
 import { LoginSignupFormItem } from "./enum";
 import { Routes } from "../../router";
 
@@ -47,19 +47,27 @@ class Signup extends Component<Props, State> {
 
         apiClient.auth
             .register({
-                email: validation[LoginSignupFormItem.username],
-                password: validation[LoginSignupFormItem.password]
+                email: validation[LoginSignupFormItem.username].trim(),
+                password: validation[LoginSignupFormItem.password].trim()
             })
             .then(() => {
                 notification.success({
                     message: "Success",
                     description: "You have successfully registered. Please log in to continue."
-                })
+                });
 
                 navigate(Routes.login);
             })
-            .catch(() => {
+            .catch((error: ApiErrorResponse) => {
+                let description = "Something went wrong. Please try again.";
 
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
+                notification.error({
+                    message: "Error",
+                    description
+                });
             })
             .finally(() => this.setState({ loading: false }));
     };
@@ -105,7 +113,13 @@ class Signup extends Component<Props, State> {
                             <Item
                                 name={LoginSignupFormItem.password}
                                 label="Password"
-                                rules={[{ required: true, message: "Please enter your password." }]}
+                                rules={[
+                                    { required: true, message: "Please enter your password." },
+                                    { min: 6, message: "Password must be at least 6 characters long." },
+                                    { pattern: /[A-Z]/, message: "Password must contain at least one uppercase letter." },
+                                    { pattern: /[0-9]/, message: "Password must contain at least one number." },
+                                    { pattern: /\W/, message: "Password must contain at least one special character." }
+                                ]}
                             >
                                 <Input type="password" />
                             </Item>

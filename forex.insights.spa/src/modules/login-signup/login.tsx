@@ -1,9 +1,9 @@
 import { Component, createRef } from "react";
 import styles from "./styles/login-signup.module.less";
-import { Button, Col, Form, FormInstance, Input, Row, Typography } from "antd";
+import { Button, Col, Form, FormInstance, Input, notification, Row, Typography } from "antd";
 import { LoginSignupFormItem } from "./enum";
 import Header from "./header";
-import { apiClient } from "../../api";
+import { apiClient, ApiErrorResponse } from "../../api";
 import { WithRouting, withRouting } from "../higher-order-components";
 import { Routes } from "../../router";
 
@@ -47,14 +47,22 @@ class Login extends Component<Props, State> {
 
         apiClient.auth
             .login({
-                email: validation[LoginSignupFormItem.username],
-                password: validation[LoginSignupFormItem.password]
+                email: validation[LoginSignupFormItem.username].trim(),
+                password: validation[LoginSignupFormItem.password].trim()
             })
             .then(() => {
                 navigate(Routes.dashboard);
             })
-            .catch(() => {
+            .catch((error: ApiErrorResponse) => {
+                let description = "The email or password you entered is incorrect. Please try again.";
 
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
+                notification.error({
+                    message: "Invalid credentials",
+                    description
+                });
             })
             .finally(() => this.setState({ loading: false }));
     };

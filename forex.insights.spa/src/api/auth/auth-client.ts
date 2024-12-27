@@ -1,5 +1,6 @@
 import { HttpMethod } from "../enums";
 import Token from "../token";
+import { ApiErrorResponse } from "./error-responses";
 import { LoginRequest, RegisterRequest } from "./interfaces";
 
 /**
@@ -91,18 +92,25 @@ class AuthClient {
             body: JSON.stringify(requestData),
             mode: "cors"
         }).then(async (response) => {
-            if (!response.ok) 
-                throw new Error();
+            if (!response.ok) {
+                const errorResponse = await response.json();
+                const errors: string[] = [];
+
+                if (errorResponse.errors) {
+                    Object.values(errorResponse.errors).forEach((value) => {
+                        errors.push(value as string);
+                    });
+                }
+
+                throw new ApiErrorResponse(errors);
+            }
 
             await response.text().then((text) => {
                 if (text) {
                     this.getToken().parse(text);
                     this.addToLocalStorage();
                 }
-            })
-
-        }).catch((error) => {
-            throw new Error(error);
+            });
         });
     }
 }
