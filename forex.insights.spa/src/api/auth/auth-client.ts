@@ -93,7 +93,7 @@ class AuthClient {
             mode: "cors"
         }).then(async (response) => {
             if (!response.ok) {
-                const errorResponse = await response.json();
+                const errorResponse = await response.text().then(text => text ? JSON.parse(text) : {});
                 const errors: string[] = [];
 
                 if (errorResponse.errors) {

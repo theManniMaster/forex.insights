@@ -1,4 +1,4 @@
-import { AuthClient } from "./auth";
+import { ApiErrorResponse, AuthClient } from "./auth";
 import { HttpMethod } from "./enums";
 import { ForexAlertClient } from "./forex-alert";
 import Token from "./token";
@@ -40,21 +40,23 @@ class ApiClient {
             body: method !== HttpMethod.Get ? JSON.stringify(requestData) : undefined,
             mode: "cors"
         }).then(async (response) => {
-                // fetch doesn't fail on 404.
-                if (!response.ok)
-                    throw new Error();
+            if (!response.ok) {
+                const errorResponse = await response.text().then(text => text ? JSON.parse(text) : {});
+                const errors: string[] = [];
 
-                /**
-                 * some responses will not have a body (Delete and Patch in our case).
-                 * so we need to check if the response has a body before trying to parse it.
-                 * Calling .text() gets the body of the response and returns a promise that resolves to a string.
-                 */
-                return response.text().then((text) => {
-                    return text ? JSON.parse(text) : {};
-                });
-            }).catch((error) => {
-                throw new Error(error);
+                if (errorResponse.errors) {
+                    Object.values(errorResponse.errors).forEach((value) => {
+                        errors.push(value as string);
+                    });
+                }
+
+                throw new ApiErrorResponse(errors);
+            }
+
+            return await response.text().then((text) => {
+                return text ? JSON.parse(text) : {};
             });
+        });
     }
 
     /**
