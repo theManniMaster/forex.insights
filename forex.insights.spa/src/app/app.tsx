@@ -4,6 +4,8 @@ import { ConfigProvider } from "antd";
 import { theme } from "./themes";
 import { router } from "../router";
 
+import "./configs";
+
 /**
  * Main application component.
  */
