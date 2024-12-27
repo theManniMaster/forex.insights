@@ -1,6 +1,6 @@
 import { Component, createRef } from "react";
 import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { Button, Col, Form, FormInstance, Input, Radio, Row, Typography } from "antd";
+import { Button, Col, Form, FormInstance, Input, Radio, Row, Tooltip, Typography } from "antd";
 import CurrencyPairSelector from "./currency-pair-selector";
 import { AlertItem } from "../enums";
 import styles from "./styles/forex-alert-setup-form.module.less";
@@ -122,7 +122,10 @@ class ForexAlertSetupForm extends Component<Props> {
                                         buttonStyle="solid"
                                     >
                                         <Radio value={ContactMethod.email}>Email</Radio>
-                                        <Radio value={ContactMethod.sms}>SMS</Radio>
+
+                                        <Tooltip title="Coming soon">
+                                            <Radio value={ContactMethod.sms} disabled>SMS</Radio>
+                                        </Tooltip>
                                     </Radio.Group>
                                 </Item>
                             </Col>
