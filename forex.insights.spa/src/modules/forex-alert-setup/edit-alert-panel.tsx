@@ -2,9 +2,11 @@ import { Component } from "react";
 import { withRouting, WithRouting } from "../higher-order-components";
 import { RouteParams, Routes } from "../../router";
 import { apiClient, ForexAlertGetResponse } from "../../api";
-import { notification, Spin } from "antd";
+import { notification, Row, Spin, Typography } from "antd";
 import styles from "./styles/add-edit-alert-panel.module.less";
 import { ForexAlertSetupForm } from "./components";
+
+const { Text } = Typography;
 
 /**
  * Edit alert panel props.
@@ -83,6 +85,15 @@ class EditAlertPanel extends Component<Props, State> {
 
         return (
             <>
+                <div className={styles.headerContainerr}>
+                    <Row justify="center">
+                        <Text className={styles.headerText}>Edit Alert.</Text>
+                    </Row>
+                    <Row justify="center">
+                        <Text className={styles.headerDescription}>Modify the details of your alert and we'll update the notification settings accordingly.</Text>
+                    </Row>
+                </div>
+
                 {
                     loading ?
                         <Spin className={styles.spin} />

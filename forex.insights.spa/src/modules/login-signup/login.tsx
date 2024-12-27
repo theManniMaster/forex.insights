@@ -120,6 +120,7 @@ class Login extends Component<Props, State> {
                         <Button
                             type="text"
                             onClick={() => navigate(Routes.register)}
+                            disabled={loading}
                         >
                             Sign up.
                         </Button>

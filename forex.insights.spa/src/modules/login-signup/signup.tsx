@@ -147,6 +147,7 @@ class Signup extends Component<Props, State> {
                         <Button
                             type="text"
                             onClick={() => navigate(Routes.login)}
+                            disabled={loading}
                         >
                             Log in.
                         </Button>

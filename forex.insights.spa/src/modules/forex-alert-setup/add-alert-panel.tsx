@@ -73,7 +73,7 @@ class AddAlertPanel extends Component<Props, State> {
                         <Text className={styles.headerText}>Add Alert.</Text>
                     </Row>
                     <Row justify="center">
-                        <Text className={styles.headerDescription}>Fill out this form and we'll send you a notificaiton when the conditions are met.</Text>
+                        <Text className={styles.headerDescription}>Fill out this form and we'll send you a notification when the conditions are met.</Text>
                     </Row>
                 </div>
 
