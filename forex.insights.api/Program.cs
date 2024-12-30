@@ -3,6 +3,7 @@ using forex.insights.api.Filters;
 using forex.insights.api.Services;
 using forex.insights.api.Services.Interfaces;
 using forex.insights.api.Templates;
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,14 +17,24 @@ namespace forex.insights.api
         {
             var builder = WebApplication.CreateBuilder(args);
             var services = builder.Services;
+            var connectionString = builder.Configuration.GetConnectionString("ForexAlertDbConnectionString");
 
             // Add DbContext.
             services.AddDbContext<ForexAlertDbContext>(options => 
-                options.UseSqlServer(builder.Configuration.GetConnectionString("ForexAlertDbConnectionString"))
+                options.UseSqlServer(connectionString)
             );
             services.AddDbContext<UserIdentityDbContext>(options => 
-                options.UseSqlServer(builder.Configuration.GetConnectionString("ForexAlertDbConnectionString"))
+                options.UseSqlServer(connectionString)
             );
+
+            // Add hangfire
+            services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(connectionString);
+                config.UseRecommendedSerializerSettings();
+                config.UseSimpleAssemblyNameTypeSerializer();
+            });
+            services.AddHangfireServer();
 
             // Add Controllers with exception filters.
             services.AddControllers(options => options.Filters.Add<GlobalExceptionFilter>());
@@ -53,6 +64,8 @@ namespace forex.insights.api
             services.AddAuthorization();
 
             var app = builder.Build();
+
+            app.UseHangfireDashboard();
 
             app.MapIdentityApi<IdentityUser>();
 

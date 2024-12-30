@@ -37,10 +37,5 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// Contact method.
         /// </summary>
         public ContactMethod ContactMethod { get; set; } = forexAlert.ContactMethod;
-
-        /// <summary>
-        /// Next alert time.
-        /// </summary>
-        public DateTime? NextAlertTime { get; set; } = forexAlert.NextAlertTime;
     }
 }

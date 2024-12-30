@@ -11,10 +11,5 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// Unique identifier.
         /// </summary>
         public Guid Id { get; set; } = forexAlert.Id;
-
-        /// <summary>
-        /// Next alert time.
-        /// </summary>
-        public DateTime? NextAlertTime { get; set; } = forexAlert.NextAlertTime;
     }
 }
