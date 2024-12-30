@@ -17,7 +17,7 @@ class CurrencyDropdownItem extends Component<Props> {
     render() {
         const { country } = this.props;
 
-        return <Row>
+        return <Row justify="center" align="middle">
             <Col span={6}>
                 <img
                     className={styles.flag}
