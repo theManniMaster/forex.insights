@@ -20,6 +20,8 @@ class CurrencyPairSelector extends Component {
                     rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
+                        showSearch
+                        allowClear
                         size="large"
                         placeholder="Search currency..."
                         options={countries.map(country => {
@@ -44,6 +46,8 @@ class CurrencyPairSelector extends Component {
                     rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
+                        showSearch
+                        allowClear
                         size="large"
                         placeholder="Search currency..."
                         options={countries.map(country => {

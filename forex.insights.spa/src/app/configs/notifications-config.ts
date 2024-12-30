@@ -4,7 +4,7 @@ import { notification } from "antd";
  * Configuration for the notifications.
  */
 notification.config({
-    duration: 2,
+    duration: 3,
     showProgress: true,
     pauseOnHover: true,
     placement: "top",
