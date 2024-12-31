@@ -85,6 +85,13 @@ class Signup extends Component<Props, State> {
             .finally(() => this.setState({ loading: false }));
     };
 
+    validateConfirmPasswordFieldOnPasswordChange = () => {
+        const confirmPasswordField = this.formRef.current?.getFieldValue(LoginSignupFormItem.confirmPassword);
+
+        if (confirmPasswordField)
+            this.formRef.current?.validateFields([LoginSignupFormItem.confirmPassword]);
+    };
+
     validateConfirmPasswordField = (value: string) => {
         const fieldValue = this.formRef.current?.getFieldValue(LoginSignupFormItem.password);
 
@@ -134,7 +141,7 @@ class Signup extends Component<Props, State> {
                                     { pattern: /\W/, message: "Password must contain at least one special character." }
                                 ]}
                             >
-                                <Input type="password" />
+                                <Input type="password" onChange={() => this.validateConfirmPasswordFieldOnPasswordChange()} />
                             </Item>
 
                             <Item
