@@ -33,6 +33,8 @@ namespace forex.insights.api
                 config.UseSqlServerStorage(connectionString);
                 config.UseRecommendedSerializerSettings();
                 config.UseSimpleAssemblyNameTypeSerializer();
+
+                config.UseActivator<JobActivator>(new BackgroundJobActivator(services));
             });
             services.AddHangfireServer();
 
@@ -41,6 +43,8 @@ namespace forex.insights.api
 
             // Add Services.
             services.AddScoped<IForexAlertService, ForexAlertService>();
+            services.AddScoped<INotificationDispatcherService, NotificationDispatcherService>();
+            services.AddScoped<IUserService, UserService>();
 
             // Add Cors.
             var allowedOrigin = (builder.Configuration["AllowedFrontendOrigin"] ?? "").ToLower();
