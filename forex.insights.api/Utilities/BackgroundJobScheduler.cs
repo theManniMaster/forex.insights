@@ -20,7 +20,7 @@ namespace forex.insights.api.Utilities
         public static void Schedule()
         {
             // Test
-            RecurringJob.AddOrUpdate<INotificationDispatcherService>("test_job", service => service.Dispatch() , Cron.Minutely());
+            RecurringJob.AddOrUpdate<INotificationDispatcherService>("test_job", service => service.DispatchAsync() , "*/4 * * * *");
 
             //RecurringJob.AddOrUpdate(_morningJobId, () => { }, _morningCron);
             //RecurringJob.AddOrUpdate(_eveningJobId, () => { }, _eveningCron);

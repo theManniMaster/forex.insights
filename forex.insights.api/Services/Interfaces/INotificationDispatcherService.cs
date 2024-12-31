@@ -8,6 +8,6 @@
         /// <summary>
         /// Dispatch notifications.
         /// </summary>
-        Task Dispatch();
+        Task DispatchAsync();
     }
 }

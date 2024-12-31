@@ -10,29 +10,38 @@ namespace forex.insights.api.Services
     /// <summary>
     /// Implementation of NotificationDispatcherService.
     /// </summary>
-    /// <param name="dbContext">Forex Db Context.</param>
+    /// <param name="forexAlertService">Forex Alert Service.</param>
+    /// <param name="userService">User Service.</param>
     /// <param name="configuration">Configuration.</param>
-    public class NotificationDispatcherService(IForexAlertService forexAlertService, 
+    /// <param name="logger">Logger.</param>
+    public class NotificationDispatcherService(IForexAlertService forexAlertService,
+        IUserService userService,
         IConfiguration configuration, 
         ILogger<INotificationDispatcherService> logger) : INotificationDispatcherService
     {
         /// <inheritdoc />
-        public async Task Dispatch()
+        public async Task DispatchAsync()
         {
-            // this class will probably need a default constructor as well.
+            var verifiedUsers = await userService.GetVerifiedUsersAsync();
 
-            //var activeAlerts = _dbContext.ForexAlerts.Where(f => f.IsActive);
-            var activeAlerts = await forexAlertService.GetAllAsync(new Guid("e9805e28-c476-4cc0-aaa5-64afcd433c25"));
+            if (!verifiedUsers.Any())
+                return;
+
+            var userIdToEmailMap = verifiedUsers.ToDictionary(f => f.Id, f => f.Email);
+
+            var activeAlerts = await forexAlertService
+                .GetAlertsByUserIdsAsync([.. userIdToEmailMap.Keys]);
 
             foreach (var alert in activeAlerts)
             {
                 var service = GetNotificationService(alert.ContactMethod);
+                var userId = userIdToEmailMap.GetValueOrDefault(alert.UserId.ToString(), "");
 
-                if (service == default)
+                if (service == default || string.IsNullOrEmpty(userId))
                     continue;
 
                 var currentRate = 0.0m; // get current rate from somewhere
-                var success = await service.SendAsync(alert, currentRate, "mannimanpreet14@gmail.com");
+                var success = await service.SendAsync(alert, currentRate, userId);
 
                 if (!success)
                     logger.LogError($"Failed to send notification for alert {alert.Id}.");
@@ -48,7 +57,7 @@ namespace forex.insights.api.Services
         {
             return contactMethod switch
             {
-                ContactMethod.Sms => null,
+                ContactMethod.Sms => null, // coming soon.
                 _ => GetEmailService(),
             };
         }
