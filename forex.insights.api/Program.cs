@@ -5,6 +5,7 @@ using forex.insights.api.Services.Interfaces;
 using forex.insights.api.Utilities;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace forex.insights.api
@@ -28,14 +29,12 @@ namespace forex.insights.api
             );
 
             // Add hangfire
-            services.AddHangfire(config =>
-            {
-                config.UseSqlServerStorage(connectionString);
-                config.UseRecommendedSerializerSettings();
-                config.UseSimpleAssemblyNameTypeSerializer();
-
-                config.UseActivator<JobActivator>(new BackgroundJobActivator(services));
-            });
+            services.AddHangfire(config => config
+                .UseSqlServerStorage(connectionString)
+                .UseRecommendedSerializerSettings()
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseActivator<JobActivator>(new BackgroundJobActivator(services))
+            );
             services.AddHangfireServer();
 
             // Add Controllers with exception filters.
@@ -45,6 +44,7 @@ namespace forex.insights.api
             services.AddScoped<IForexAlertService, ForexAlertService>();
             services.AddScoped<INotificationDispatcherService, NotificationDispatcherService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IEmailSender, IdentityEmailSenderService>(); 
 
             // Add Cors.
             var allowedOrigin = (builder.Configuration["AllowedFrontendOrigin"] ?? "").ToLower();
@@ -60,8 +60,12 @@ namespace forex.insights.api
                 });
             });
 
-            services.AddIdentityApiEndpoints<IdentityUser>()
-                .AddEntityFrameworkStores<UserIdentityDbContext>();
+            services.AddIdentityApiEndpoints<IdentityUser>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+                .AddEntityFrameworkStores<UserIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddAuthentication();
             services.AddAuthorization();
