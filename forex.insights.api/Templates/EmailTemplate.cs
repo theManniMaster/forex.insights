@@ -25,7 +25,7 @@ namespace forex.insights.api.Templates
                 GetHtmlContent(activeAlert)
             );
         }
-        
+
         /// <summary>
         /// Subject for the email.
         /// </summary>

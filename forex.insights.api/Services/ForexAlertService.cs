@@ -29,9 +29,11 @@ namespace forex.insights.api.Services
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<ForexAlert>> GetAlertsByUserIdsAsync(HashSet<string> userIds)
+        public async Task<IEnumerable<ForexAlert>> GetActiveAlertsByUserIdsAsync(HashSet<string> userIds)
         {
-            return await dbContext.ForexAlerts.Where(f => userIds.Contains(f.UserId.ToString())).ToListAsync();
+            return await dbContext.ForexAlerts
+                .Where(f => f.IsActive && userIds.Contains(f.UserId.ToString()))
+                .ToListAsync();
         }
 
         /// <inheritdoc />

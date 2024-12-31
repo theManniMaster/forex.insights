@@ -60,5 +60,10 @@ namespace forex.insights.api.Entities.ForexAlerts
         /// If Alert is active.
         /// </summary>
         public bool IsActive { get; set; } = true;
+
+        /// <summary>
+        /// The last time this alert was sent.
+        /// </summary>
+        public DateTime? LastSentTime { get; set; }
     }
 }

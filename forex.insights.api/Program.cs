@@ -2,7 +2,7 @@ using forex.insights.api.Data;
 using forex.insights.api.Filters;
 using forex.insights.api.Services;
 using forex.insights.api.Services.Interfaces;
-using forex.insights.api.Templates;
+using forex.insights.api.Utilities;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +20,10 @@ namespace forex.insights.api
             var connectionString = builder.Configuration.GetConnectionString("ForexAlertDbConnectionString");
 
             // Add DbContext.
-            services.AddDbContext<ForexAlertDbContext>(options => 
+            services.AddDbContext<ForexAlertDbContext>(options =>
                 options.UseSqlServer(connectionString)
             );
-            services.AddDbContext<UserIdentityDbContext>(options => 
+            services.AddDbContext<UserIdentityDbContext>(options =>
                 options.UseSqlServer(connectionString)
             );
 
@@ -41,7 +41,6 @@ namespace forex.insights.api
 
             // Add Services.
             services.AddScoped<IForexAlertService, ForexAlertService>();
-            services.AddKeyedScoped<INotificationService, EmailService>(TemplateType.Email);
 
             // Add Cors.
             var allowedOrigin = (builder.Configuration["AllowedFrontendOrigin"] ?? "").ToLower();
@@ -83,6 +82,8 @@ namespace forex.insights.api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            BackgroundJobScheduler.Schedule();
 
             app.Run();
         }

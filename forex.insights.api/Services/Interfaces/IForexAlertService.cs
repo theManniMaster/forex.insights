@@ -30,11 +30,11 @@ namespace forex.insights.api.Services.Interfaces
         Task<IEnumerable<ForexAlert>> GetAllAsync(Guid userId);
 
         /// <summary>
-        /// Get Alerts by User Ids.
+        /// Get active Alerts by User Ids.
         /// </summary>
         /// <param name="userIds">User ids.</param>
         /// <returns>Alerts Data.</returns>
-        Task<IEnumerable<ForexAlert>> GetAlertsByUserIdsAsync(HashSet<string> userIds);
+        Task<IEnumerable<ForexAlert>> GetActiveAlertsByUserIdsAsync(HashSet<string> userIds);
 
         /// <summary>
         /// Inserts a new ForexAlert into the database.

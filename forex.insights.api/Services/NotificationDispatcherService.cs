@@ -1,9 +1,9 @@
-﻿using forex.insights.api.Data;
+﻿using forex.insights.api.Entities.ForexAlerts;
 using forex.insights.api.Entities.ForexAlerts.Enums;
 using forex.insights.api.Services.Interfaces;
 using forex.insights.api.Utilities.Notifications;
 using forex.insights.api.Utilities.Notifications.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace forex.insights.api.Services
 {
@@ -16,36 +16,75 @@ namespace forex.insights.api.Services
     /// <param name="logger">Logger.</param>
     public class NotificationDispatcherService(IForexAlertService forexAlertService,
         IUserService userService,
-        IConfiguration configuration, 
+        IConfiguration configuration,
         ILogger<INotificationDispatcherService> logger) : INotificationDispatcherService
     {
+        private const int _bufferHour = 1;
+
         /// <inheritdoc />
         public async Task DispatchAsync()
         {
             var verifiedUsers = await userService.GetVerifiedUsersAsync();
 
-            if (!verifiedUsers.Any())
+            if (verifiedUsers == default || !verifiedUsers.Any())
                 return;
 
             var userIdToEmailMap = verifiedUsers.ToDictionary(f => f.Id, f => f.Email);
-
-            var activeAlerts = await forexAlertService
-                .GetAlertsByUserIdsAsync([.. userIdToEmailMap.Keys]);
+            var activeAlerts = await GetAlerts(userIdToEmailMap);
 
             foreach (var alert in activeAlerts)
             {
                 var service = GetNotificationService(alert.ContactMethod);
-                var userId = userIdToEmailMap.GetValueOrDefault(alert.UserId.ToString(), "");
+                var email = userIdToEmailMap.GetValueOrDefault(alert.UserId.ToString(), "");
 
-                if (service == default || string.IsNullOrEmpty(userId))
+                if (service == default || string.IsNullOrEmpty(email))
                     continue;
 
-                var currentRate = 0.0m; // get current rate from somewhere
-                var success = await service.SendAsync(alert, currentRate, userId);
+                var currentRate = 0.0m; // get current rate from somewhere, and only send if it meets the criteria.
+                var success = await service.SendAsync(alert, currentRate, email);
 
                 if (!success)
                     logger.LogError($"Failed to send notification for alert {alert.Id}.");
+                else
+                    await UpdateAlertStatus(alert);
             }
+        }
+
+        /// <summary>
+        /// Get alerts based on last sent time and alert frequency.
+        /// </summary>
+        /// <param name="userIdToEmailMap">User id to email map.</param>
+        /// <returns>Alerts Collection.</returns>
+        private async Task<IEnumerable<ForexAlert>> GetAlerts(Dictionary<string, string?> userIdToEmailMap)
+        {
+            var alerts = await forexAlertService
+                .GetActiveAlertsByUserIdsAsync([.. userIdToEmailMap.Keys]);
+
+            var frequencyMap = new Dictionary<NotificationFrequency, int>
+            {
+                { NotificationFrequency.Once, 0 }, // Once doesn't need any frequency check
+                { NotificationFrequency.Daily, 1 },
+                { NotificationFrequency.Weekly, 7 }
+            };
+
+            var activeAlerts = new List<ForexAlert>();
+
+            foreach (var alert in alerts)
+            {
+                if (frequencyMap.TryGetValue(alert.Frequency, out var daysToAdd))
+                {
+                    if (alert.Frequency == NotificationFrequency.Once)
+                    {
+                        activeAlerts.Add(alert);
+                    }
+                    else if (!alert.LastSentTime.HasValue || alert.LastSentTime.Value.AddDays(daysToAdd) < DateTime.UtcNow.AddHours(_bufferHour))
+                    {
+                        activeAlerts.Add(alert);
+                    }
+                }
+            }
+
+            return activeAlerts;
         }
 
         /// <summary>
@@ -78,6 +117,21 @@ namespace forex.insights.api.Services
             }
 
             return new EmailService(apiKey, fromEmail);
+        }
+
+        /// <summary>
+        /// Update alert status based on frequency.
+        /// </summary>
+        /// <param name="alert">Alert to be updated.</param>
+        /// <returns>Task.</returns>
+        private async Task UpdateAlertStatus(ForexAlert alert)
+        {
+            if (alert.Frequency == NotificationFrequency.Once)
+                alert.IsActive = false;
+
+            alert.LastSentTime = DateTime.UtcNow;
+
+            await forexAlertService.UpdateAsync(alert);
         }
     }
 }
