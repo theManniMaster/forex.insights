@@ -36,6 +36,19 @@ class Signup extends Component<Props, State> {
         };
     }
 
+    componentDidMount = () => {
+        window.addEventListener("keydown", this.handleKeyDown);
+    };
+
+    componentWillUnmount = () => {
+        window.removeEventListener("keydown", this.handleKeyDown);
+    };
+
+    handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Enter")
+            this.formRef.current?.submit();
+    };
+
     handleFormValuesSubmit = async () => {
         const { navigate } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
