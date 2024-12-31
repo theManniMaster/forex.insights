@@ -1,6 +1,6 @@
 ﻿using forex.insights.api.Entities.ForexAlerts;
 
-namespace forex.insights.api.Services.Interfaces
+namespace forex.insights.api.Utilities.Notifications.Interfaces
 {
     /// <summary>
     /// Interface to send notifications.
@@ -13,7 +13,7 @@ namespace forex.insights.api.Services.Interfaces
         /// <param name="activeAlert">Active Alert.</param>
         /// <param name="currentRate">Current Rate.</param>
         /// <param name="to">Recipient.</param>
-        /// <returns>Task.</returns>
-        Task SendAsync(ForexAlert activeAlert, decimal currentRate, string to);
+        /// <returns>True if success.</returns>
+        Task<bool> SendAsync(ForexAlert activeAlert, decimal currentRate, string to);
     }
 }

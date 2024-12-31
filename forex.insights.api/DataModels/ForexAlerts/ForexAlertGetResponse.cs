@@ -39,8 +39,8 @@ namespace forex.insights.api.DataModels.ForexAlerts
         public ContactMethod ContactMethod { get; set; } = forexAlert.ContactMethod;
 
         /// <summary>
-        /// Next alert time.
+        /// If Alert is active.
         /// </summary>
-        public DateTime? NextAlertTime { get; set; } = forexAlert.NextAlertTime;
+        public bool IsActive { get; set; } = forexAlert.IsActive;
     }
 }

@@ -119,7 +119,7 @@ namespace forex.insights.api.Controllers
         public async Task<ActionResult> PatchAsync([FromBody] ForexAlertPatchRequest request)
         {
             var userId = GetUserId();
-            
+
             if (!userId.HasValue)
                 return Unauthorized();
 

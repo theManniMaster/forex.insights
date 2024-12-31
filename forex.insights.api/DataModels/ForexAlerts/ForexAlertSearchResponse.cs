@@ -10,7 +10,7 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// <summary>
         /// Requested Forex Alerts.
         /// </summary>
-        public IEnumerable<ForexAlertGetResponse> ForexAlerts { get; set; } = 
+        public IEnumerable<ForexAlertGetResponse> ForexAlerts { get; set; } =
             forexAlerts.Select(forexAlert => new ForexAlertGetResponse(forexAlert));
     }
 }
