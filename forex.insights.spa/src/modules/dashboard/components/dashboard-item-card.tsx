@@ -132,10 +132,10 @@ class DashboardItemCard extends Component<Props> {
                         <Row className={styles.labelValue}>{this.getContactMethodLabel()}</Row>
                         <Row className={styles.labelValue}>
                             {
-                                alert.nextAlertTime ?
-                                    <Tag color="success" bordered={false} className={styles.tag}>Completed</Tag>
-                                    :
+                                alert.isActive ?
                                     <Tag color="blue" bordered={false} className={styles.tag}>Active</Tag>
+                                    :
+                                    <Tag color="success" bordered={false} className={styles.tag}>Completed</Tag>
                             }
                         </Row>
                     </Col>

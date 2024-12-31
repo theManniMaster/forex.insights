@@ -57,8 +57,8 @@ namespace forex.insights.api.Entities.ForexAlerts
         public ContactMethod ContactMethod { get; set; }
 
         /// <summary>
-        /// Next alert time.
+        /// If Alert is active.
         /// </summary>
-        public DateTime? NextAlertTime { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

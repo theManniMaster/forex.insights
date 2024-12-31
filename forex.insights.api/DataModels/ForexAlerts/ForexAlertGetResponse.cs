@@ -37,5 +37,10 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// Contact method.
         /// </summary>
         public ContactMethod ContactMethod { get; set; } = forexAlert.ContactMethod;
+
+        /// <summary>
+        /// If Alert is active.
+        /// </summary>
+        public bool IsActive { get; set; } = forexAlert.IsActive;
     }
 }

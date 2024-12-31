@@ -33,6 +33,11 @@ interface ForexAlertGetResponse {
      * The contact method.
      */
     contactMethod: ContactMethod;
+
+    /**
+     * If Alert is active.
+     */
+    isActive: boolean;
 }
 
 export type { ForexAlertGetResponse };
