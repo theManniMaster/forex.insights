@@ -36,7 +36,8 @@ class ForexAlertSetupForm extends Component<Props> {
             fromCurrency: validation[AlertItem.fromCurrency],
             toCurrency: validation[AlertItem.toCurrency],
             contactMethod: validation[AlertItem.contactMethod],
-            minimumRate: validation[AlertItem.minimumRate]
+            minimumRate: validation[AlertItem.minimumRate],
+            isActive: alert?.isActive ?? true,
         });
     };
 
