@@ -2,10 +2,10 @@ import { Component, createRef } from "react";
 import styles from "./styles/login-signup.module.less";
 import { Button, Col, Form, FormInstance, Input, notification, Row, Typography } from "antd";
 import { LoginSignupFormItem } from "./enum";
-import Header from "./header";
 import { apiClient, ApiErrorResponse } from "../../api";
 import { WithRouting, withRouting } from "../higher-order-components";
 import { Routes } from "../../router";
+import { EmailVerificationPanel, Header } from "./components";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -20,6 +20,8 @@ interface Props extends WithRouting { }
  */
 interface State {
     loading: boolean;
+    emailVerificationPanelVisible: boolean;
+    emailToBeVerified: string;
 }
 
 /**
@@ -32,7 +34,9 @@ class Login extends Component<Props, State> {
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
+            emailVerificationPanelVisible: false,
+            emailToBeVerified: "",
         };
     }
 
@@ -67,14 +71,19 @@ class Login extends Component<Props, State> {
                 navigate(Routes.dashboard);
             })
             .catch((error: ApiErrorResponse) => {
-                let description = "The email or password you entered is incorrect. Is your account verified?";
+                let description = "The email or password you entered is incorrect.";
 
                 if (error.errors.length > 0)
                     description = error.errors.map(e => e).join(" | ");
 
                 notification.error({
-                    message: "Invalid credentials",
+                    message: "Error",
                     description
+                });
+
+                this.setState({
+                    emailToBeVerified: validation[LoginSignupFormItem.username].trim(),
+                    emailVerificationPanelVisible: true
                 });
             })
             .finally(() => this.setState({ loading: false }));
@@ -82,12 +91,17 @@ class Login extends Component<Props, State> {
 
     render() {
         const { navigate } = this.props;
-        const { loading } = this.state;
+        const { loading, emailVerificationPanelVisible, emailToBeVerified } = this.state;
 
         return (
             <div className={styles.container}>
 
                 <Header />
+                <EmailVerificationPanel
+                    isLogin
+                    visible={emailVerificationPanelVisible}
+                    email={emailToBeVerified}
+                />
 
                 <Row justify="center">
 

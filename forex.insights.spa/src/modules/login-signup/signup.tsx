@@ -1,11 +1,11 @@
 import { Component, createRef } from "react";
 import { withRouting, WithRouting } from "../higher-order-components";
-import Header from "./header";
 import styles from "./styles/login-signup.module.less";
 import { Button, Col, Form, FormInstance, Input, notification, Row, Typography } from "antd";
 import { apiClient, ApiErrorResponse } from "../../api";
 import { LoginSignupFormItem } from "./enum";
 import { Routes } from "../../router";
+import { EmailVerificationPanel, Header } from "./components";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -20,6 +20,8 @@ interface Props extends WithRouting { }
  */
 interface State {
     loading: boolean;
+    emailVerificationPanelVisible: boolean;
+    emailToBeVerified: string;
 }
 
 /**
@@ -32,7 +34,9 @@ class Signup extends Component<Props, State> {
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
+            emailVerificationPanelVisible: false,
+            emailToBeVerified: "",
         };
     }
 
@@ -50,7 +54,6 @@ class Signup extends Component<Props, State> {
     };
 
     handleFormValuesSubmit = async () => {
-        const { navigate } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
         if (!validation)
@@ -66,10 +69,13 @@ class Signup extends Component<Props, State> {
             .then(() => {
                 notification.success({
                     message: "Success",
-                    description: "You have successfully registered. Please log in to continue."
+                    description: "You have successfully registered."
                 });
 
-                navigate(Routes.login);
+                this.setState({
+                    emailToBeVerified: validation[LoginSignupFormItem.username].trim(),
+                    emailVerificationPanelVisible: true
+                });
             })
             .catch((error: ApiErrorResponse) => {
                 let description = "Something went wrong. Please try again.";
@@ -100,12 +106,17 @@ class Signup extends Component<Props, State> {
 
     render() {
         const { navigate } = this.props;
-        const { loading } = this.state;
+        const { loading, emailVerificationPanelVisible, emailToBeVerified } = this.state;
 
         return (
             <div className={styles.container}>
 
                 <Header />
+                <EmailVerificationPanel
+                    isLogin={false}
+                    visible={emailVerificationPanelVisible}
+                    email={emailToBeVerified}
+                />
 
                 <Row justify="center">
 
