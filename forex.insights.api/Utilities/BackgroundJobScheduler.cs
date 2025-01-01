@@ -8,28 +8,20 @@ namespace forex.insights.api.Utilities
     /// </summary>
     public class BackgroundJobScheduler
     {
-        private const string _morningJobId = "morning_job";
-        private const string _morningCron = "0 10 * * *";
-
         private const string _eveningJobId = "evening_job";
-        private const string _eveningCron = "0 18 * * *";
+        private const string _eveningCron = "5 19 * * *";
 
         /// <summary>
         /// Schedule jobs to run twice a day.
         /// </summary>
         public static void Schedule()
         {
-            RecurringJob.AddOrUpdate<INotificationDispatcherService>(
-                _morningJobId, 
-                services => services.DispatchAsync(), 
-                _morningCron
-            );
-
-            RecurringJob.AddOrUpdate<INotificationDispatcherService>(
-                _eveningJobId, 
-                services => services.DispatchAsync(),
-                _eveningCron
-            );
+            //// The API i'm using updates data at 7pm (toronto time) everyday. This job will run at 7:05 pm. 
+            //RecurringJob.AddOrUpdate<INotificationDispatcherService>(
+            //    _eveningJobId, 
+            //    services => services.DispatchAsync(),
+            //    _eveningCron 
+            //);
         }
     }
 }
