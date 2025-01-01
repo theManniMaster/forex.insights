@@ -16,12 +16,12 @@ namespace forex.insights.api.Utilities
         /// </summary>
         public static void Schedule()
         {
-            //// The API i'm using updates data at 7pm (toronto time) everyday. This job will run at 7:05 pm. 
-            //RecurringJob.AddOrUpdate<INotificationDispatcherService>(
-            //    _eveningJobId, 
-            //    services => services.DispatchAsync(),
-            //    _eveningCron 
-            //);
+            //// Exchange Rate API updates data at 7pm (toronto time) everyday. This job will run at 7:05 pm. 
+            RecurringJob.AddOrUpdate<INotificationDispatcherService>(
+                _eveningJobId,
+                service => service.DispatchAsync(),
+                _eveningCron
+            );
         }
     }
 }
