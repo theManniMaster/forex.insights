@@ -15,6 +15,8 @@ namespace forex.insights.api.Utilities.Notifications
         {
             var emailTemplate = new EmailTemplate();
             var message = emailTemplate.CreateMessage(activeAlert, fromEmail, to);
+            message.SetClickTracking(false, false);
+
             var client = new SendGridClient(apiKey);
             var response = await client.SendEmailAsync(message);
 

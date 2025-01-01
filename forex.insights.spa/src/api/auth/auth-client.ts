@@ -1,7 +1,7 @@
 import { HttpMethod } from "../enums";
 import Token from "../token";
 import { ApiErrorResponse } from "./error-responses";
-import { LoginRequest, RegisterRequest } from "./interfaces";
+import { LoginRequest, RegisterRequest, ResendVerificationRequest } from "./interfaces";
 
 /**
  * Api client for auth.
@@ -69,6 +69,14 @@ class AuthClient {
      */
     register(data: RegisterRequest) {
         return this.fetchData(data, "register");
+    }
+
+    /**
+     * Resend verification email.
+     * @param data Request data.
+     */
+    resendVerificationEmail(data: ResendVerificationRequest) {
+        return this.fetchData(data, "resendConfirmationEmail");
     }
 
     /**
