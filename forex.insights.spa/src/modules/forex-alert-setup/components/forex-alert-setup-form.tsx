@@ -22,6 +22,8 @@ interface Props {
  */
 class ForexAlertSetupForm extends Component<Props> {
     formRef = createRef<FormInstance>();
+    minRate = 0.01;
+    maxRate = 9999999.99;
 
     handleFormValuesSubmit = async () => {
         const { onSubmit, alert } = this.props;
@@ -98,11 +100,18 @@ class ForexAlertSetupForm extends Component<Props> {
                             <Col span={24} md={16}>
                                 <Item
                                     name={AlertItem.minimumRate}
-                                    rules={[{ required: true, message: "Please select a minimum rate." }]}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            validator: (_, value) => value < this.minRate || value > this.maxRate ? Promise.reject() : Promise.resolve(),
+                                            message: "Value must be in the range 0.01 - 9,999,999.99"
+                                        }
+                                    ]}
                                 >
                                     <Input
                                         type="number"
                                         placeholder="Enter amount"
+                                        min={1}
                                     />
                                 </Item>
                             </Col>
