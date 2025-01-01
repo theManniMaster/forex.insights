@@ -71,7 +71,7 @@ class Login extends Component<Props, State> {
                 navigate(Routes.dashboard);
             })
             .catch((error: ApiErrorResponse) => {
-                let description = "The email or password you entered is incorrect.";
+                let description = "Something went wrong. Please make sure the credentials are correct.";
 
                 if (error.errors.length > 0)
                     description = error.errors.map(e => e).join(" | ");
