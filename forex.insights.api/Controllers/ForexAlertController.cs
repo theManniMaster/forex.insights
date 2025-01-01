@@ -133,6 +133,7 @@ namespace forex.insights.api.Controllers
             existingAlert.ToCurrency = request.ToCurrency ?? existingAlert.ToCurrency;
             existingAlert.MinimumRate = request.MinimumRate ?? existingAlert.MinimumRate;
             existingAlert.ContactMethod = request.ContactMethod ?? existingAlert.ContactMethod;
+            existingAlert.IsActive = true;
 
             await _forexAlertService.UpdateAsync(existingAlert);
 
