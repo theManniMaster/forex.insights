@@ -105,7 +105,7 @@ class EditAlertPanel extends Component<Props, State> {
                         :
                         <ForexAlertSetupForm
                             alert={alert}
-                            submitButtonLabel="Edit"
+                            submitButtonLabel={alert?.isActive ? "Edit" : "Activate"}
                             onSubmit={this.editAlert}
                         />
                 }
