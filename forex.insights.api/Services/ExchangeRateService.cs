@@ -43,9 +43,8 @@ namespace forex.insights.api.Services
             }
 
             using var client = new HttpClient();
-            client.BaseAddress = new Uri($"{_baseUrl}/{apiKey}/{_endpoint}");
 
-            var result = await client.GetFromJsonAsync<ExchangeRateGetResponse>($"{baseCurrency}");
+            var result = await client.GetFromJsonAsync<ExchangeRateGetResponse>(new Uri($"{_baseUrl}/{apiKey}/{_endpoint}/{baseCurrency}"));
 
             if (result == default)
             {
