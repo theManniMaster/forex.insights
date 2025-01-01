@@ -111,7 +111,6 @@ class ForexAlertSetupForm extends Component<Props> {
                                     <Input
                                         type="number"
                                         placeholder="Enter amount"
-                                        min={1}
                                     />
                                 </Item>
                             </Col>
