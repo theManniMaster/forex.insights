@@ -14,7 +14,7 @@ namespace forex.insights.api.Utilities.Notifications
         public async Task<bool> SendAsync(ForexAlert activeAlert, decimal currentRate, string to)
         {
             var emailTemplate = new EmailTemplate();
-            var message = emailTemplate.CreateMessage(activeAlert, fromEmail, to);
+            var message = emailTemplate.CreateMessage(activeAlert, currentRate, fromEmail, to);
             message.SetClickTracking(false, false);
 
             var client = new SendGridClient(apiKey);
