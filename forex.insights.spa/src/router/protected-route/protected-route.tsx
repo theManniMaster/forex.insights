@@ -103,7 +103,7 @@ class ProtectedRoute extends Component<Props, State> {
                         loading ? <Spin className={styles.spin} /> : <Outlet />
                     }
 
-                    <Row justify="center">
+                    <Row justify="center" className={styles.feedbackContainer}>
                         <Button
                             type="text"
                             disabled={loading}
