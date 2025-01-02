@@ -45,6 +45,7 @@ namespace forex.insights.api
             services.AddScoped<INotificationDispatcherService, NotificationDispatcherService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IExchangeRateService, ExchangeRateService>();
+            services.AddScoped<IHangfireService, HangfireService>();
             services.AddTransient<IEmailSender, IdentityEmailSenderService>(); 
 
             // Add Cors.
@@ -73,14 +74,18 @@ namespace forex.insights.api
 
             var app = builder.Build();
 
-            app.UseHangfireDashboard();
-
             app.MapIdentityApi<IdentityUser>();
 
             app.UseCors(corsPolicyName);
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = [new HangfireAuthorizationFilter(builder.Configuration["AdminEmail"])],
+                AppPath = null,
+            });
 
             // Configure the HTTP request pipeline.
             app.UseHttpsRedirection();
