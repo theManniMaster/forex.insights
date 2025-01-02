@@ -4,11 +4,12 @@ import { Routes } from "../enum";
 import { apiClient } from "../../api";
 import { Button, Col, notification, Popconfirm, Row, Spin } from "antd";
 import styles from "./styles/protected-route.module.less";
+import { WithRouting, withRouting } from "../../modules";
 
 /**
  * Protected route props.
  */
-interface Props { }
+interface Props extends WithRouting { }
 
 /**
  * Protected route state.
@@ -63,12 +64,21 @@ class ProtectedRoute extends Component<Props, State> {
     };
 
     render() {
+        const { navigate } = this.props;
         const { loading } = this.state;
 
         return (
             apiClient.auth.isLoggedIn() ?
                 <>
-                    <Row justify="center" gutter={[12, 0]} className={styles.logoutContainer}>
+                    <Row justify="center" gutter={[12, 12]} className={styles.logoutContainer}>
+                        <Col>
+                            <Button
+                                onClick={this.logOut}
+                                disabled={loading}
+                            >
+                                Log out
+                            </Button>
+                        </Col>
                         <Col>
                             <Popconfirm
                                 title="Are you sure?"
@@ -87,19 +97,21 @@ class ProtectedRoute extends Component<Props, State> {
                                 </Button>
                             </Popconfirm>
                         </Col>
-                        <Col>
-                            <Button
-                                onClick={this.logOut}
-                                disabled={loading}
-                            >
-                                Log out
-                            </Button>
-                        </Col>
                     </Row>
 
                     {
                         loading ? <Spin className={styles.spin} /> : <Outlet />
                     }
+
+                    <Row justify="center">
+                        <Button
+                            type="text"
+                            disabled={loading}
+                            onClick={() => navigate(Routes.feedback)}
+                        >
+                            Send Feedback
+                        </Button>
+                    </Row>
                 </>
                 :
                 <Navigate to={Routes.login} replace />
@@ -107,4 +119,6 @@ class ProtectedRoute extends Component<Props, State> {
     }
 }
 
-export default ProtectedRoute;
+const ComponentWithRouting = withRouting(ProtectedRoute);
+
+export default ComponentWithRouting;

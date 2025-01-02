@@ -3,6 +3,7 @@ import { AddAlertPanel, DashboardPanel, EditAlertPanel, Login, Signup } from "..
 import { RouteParams, Routes } from ".";
 import { ProtectedRoute } from "./protected-route";
 import { ErrorPage } from "./error-page";
+import { FeedbackPage } from "./feedback-page";
 
 /**
  * React browser router for defining UI paths.
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: Routes.register,
                 element: <Signup />
+            },
+            {
+                path: Routes.feedback,
+                element: <FeedbackPage />
             },
             {
                 element: <ProtectedRoute />,

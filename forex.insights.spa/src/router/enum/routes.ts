@@ -8,6 +8,7 @@ enum Routes {
     dashboard = "/dashboard",
     create = "/create",
     edit = "/edit",
+    feedback = "/feedback",
     oops = "/oops",
 }
 
