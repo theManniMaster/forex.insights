@@ -2,6 +2,7 @@ import { ApiErrorResponse, AuthClient } from "./auth";
 import { HttpMethod } from "./enums";
 import { ForexAlertClient } from "./forex-alert";
 import Token from "./token";
+import { UserClient } from "./user";
 
 /**
  * Class to handle all API requests.
@@ -68,6 +69,11 @@ class ApiClient {
      * Forex alert client.
      */
     forexAlert = new ForexAlertClient(this.fetchData);
+
+    /**
+     * User client.
+     */
+    user = new UserClient(this.fetchData);
 }
 
 const instance = new ApiClient();

@@ -69,7 +69,7 @@ class Signup extends Component<Props, State> {
             .then(() => {
                 notification.success({
                     message: "Success",
-                    description: "You have successfully registered."
+                    description: "Account created successfully."
                 });
 
                 this.setState({

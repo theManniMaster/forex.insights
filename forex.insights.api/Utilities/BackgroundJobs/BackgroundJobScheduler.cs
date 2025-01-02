@@ -1,7 +1,7 @@
 ﻿using forex.insights.api.Services.Interfaces;
 using Hangfire;
 
-namespace forex.insights.api.Utilities
+namespace forex.insights.api.Utilities.BackgroundJobs
 {
     /// <summary>
     /// Schedules a background job.

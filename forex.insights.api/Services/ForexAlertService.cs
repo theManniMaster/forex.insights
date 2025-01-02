@@ -1,6 +1,7 @@
 ﻿using forex.insights.api.Data;
 using forex.insights.api.Entities.ForexAlerts;
 using forex.insights.api.Services.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace forex.insights.api.Services
@@ -55,6 +56,15 @@ namespace forex.insights.api.Services
         {
             dbContext.ForexAlerts.Remove(toBeDeleted);
             await dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAllAsync(string userId)
+        {
+            const string parameterName = "@userId";
+            var query = $"DELETE FROM ForexAlerts WHERE UserId = {parameterName};";
+
+            await dbContext.Database.ExecuteSqlRawAsync(query, new SqlParameter(parameterName, userId));
         }
     }
 }
