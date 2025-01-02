@@ -56,5 +56,12 @@ namespace forex.insights.api.Services.Interfaces
         /// <param name="toBeDeleted">To be deleted Alert.</param>
         /// <returns>Task.</returns>
         Task DeleteAsync(ForexAlert toBeDeleted);
+
+        /// <summary>
+        /// Delete all Alerts for a User.
+        /// </summary>
+        /// <param name="userId">User Id.</param>
+        /// <returns>Task.</returns>
+        Task DeleteAllAsync(string userId);
     }
 }

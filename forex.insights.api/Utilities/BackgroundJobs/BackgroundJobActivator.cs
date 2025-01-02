@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 
-namespace forex.insights.api.Utilities
+namespace forex.insights.api.Utilities.BackgroundJobs
 {
     /// <summary>
     /// Activator for background jobs - used by Hangfire server.

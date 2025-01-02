@@ -2,7 +2,7 @@ using forex.insights.api.Data;
 using forex.insights.api.Filters;
 using forex.insights.api.Services;
 using forex.insights.api.Services.Interfaces;
-using forex.insights.api.Utilities;
+using forex.insights.api.Utilities.BackgroundJobs;
 using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
