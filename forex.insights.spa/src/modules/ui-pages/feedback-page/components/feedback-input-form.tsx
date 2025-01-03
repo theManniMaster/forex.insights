@@ -1,7 +1,8 @@
-import { Button, Col, Form, FormInstance, Input, Row } from "antd";
+import { Button, Col, Form, FormInstance, Input, notification, Row } from "antd";
 import { Component, createRef } from "react";
 import { FeedbackFormItem } from "./enums";
 import styles from "./styles/feedback-input-form.module.less";
+import { apiClient, ApiErrorResponse } from "../../../../api";
 
 const { Item } = Form;
 const { TextArea } = Input;
@@ -35,6 +36,7 @@ class FeedbackInputForm extends Component<Props, State> {
     }
 
     handleFormSubmit = async () => {
+        const { onSubmit } = this.props;
         const validation = await this.formRef.current?.validateFields().catch(() => undefined);
 
         if (!validation)
@@ -42,7 +44,29 @@ class FeedbackInputForm extends Component<Props, State> {
 
         this.setState({ loading: true });
 
-        // submit feedback.
+        apiClient.feedback
+            .post({
+                firstName: validation[FeedbackFormItem.firstname],
+                lastName: validation[FeedbackFormItem.lastname],
+                feedback: validation[FeedbackFormItem.feedback]
+            })
+            .then(() => {
+                onSubmit();
+            })
+            .catch((error: ApiErrorResponse) => {
+                let description = "Something went wrong. Please try again.";
+
+                if (error.errors.length > 0)
+                    description = error.errors.map(e => e).join(" | ");
+
+                notification.error({
+                    message: "Error",
+                    description
+                });
+            })
+            .finally(() => {
+                this.setState({ loading: false });
+            });
     };
 
     render() {
@@ -65,7 +89,7 @@ class FeedbackInputForm extends Component<Props, State> {
                                 { required: true, message: "Please enter your first name." }
                             ]}
                         >
-                            <Input />
+                            <Input maxLength={20} />
                         </Item>
                     </Col>
 
@@ -77,7 +101,7 @@ class FeedbackInputForm extends Component<Props, State> {
                                 { required: true, message: "Please enter your last name." }
                             ]}
                         >
-                            <Input />
+                            <Input maxLength={20} />
                         </Item>
                     </Col>
 

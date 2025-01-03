@@ -46,6 +46,7 @@ namespace forex.insights.api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IExchangeRateService, ExchangeRateService>();
             services.AddScoped<IHangfireService, HangfireService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddTransient<IEmailSender, IdentityEmailSenderService>(); 
 
             // Add Cors.

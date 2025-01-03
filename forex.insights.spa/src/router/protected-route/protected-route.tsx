@@ -55,11 +55,14 @@ class ProtectedRoute extends Component<Props, State> {
     };
 
     logOut = () => {
+        this.setState({ loading: true });
+
         apiClient.auth
             .logout()
             .then(() => {
                 window.location.reload();
-            });
+            })
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
@@ -82,14 +85,14 @@ class ProtectedRoute extends Component<Props, State> {
                                 title="Are you sure?"
                                 description="This action is irreversible. All linked alerts will also be deleted."
                                 okText="Delete"
-                                okButtonProps={{ danger: true, loading: loading }}
+                                okButtonProps={{ danger: true, disabled: loading }}
                                 onConfirm={this.deleteAccount}
                                 cancelButtonProps={{ disabled: loading }}
                             >
                                 <Button
                                     type="primary"
                                     danger
-                                    loading={loading}
+                                    disabled={loading}
                                 >
                                     Delete Account
                                 </Button>

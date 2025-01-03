@@ -1,4 +1,5 @@
-﻿using forex.insights.api.Entities.ForexAlerts;
+﻿using forex.insights.api.Entities.Feedbacks;
+using forex.insights.api.Entities.ForexAlerts;
 using Microsoft.EntityFrameworkCore;
 
 namespace forex.insights.api.Data
@@ -13,5 +14,10 @@ namespace forex.insights.api.Data
         /// Forex Alert data set.
         /// </summary>
         public DbSet<ForexAlert> ForexAlerts { get; set; }
+
+        /// <summary>
+        /// Feedback data set.
+        /// </summary>
+        public DbSet<Feedback> Feedbacks { get; set; }
     }
 }
