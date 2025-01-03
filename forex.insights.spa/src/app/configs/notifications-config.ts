@@ -9,5 +9,5 @@ notification.config({
     pauseOnHover: true,
     placement: "top",
     maxCount: 3,
-    closable: false,
+    closable: true,
 });

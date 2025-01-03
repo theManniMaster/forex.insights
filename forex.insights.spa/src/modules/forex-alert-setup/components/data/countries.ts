@@ -132,7 +132,7 @@ const countries: Country[] = [
     { "currency": "SOS", "flag": "https://flagcdn.com/so.svg", "name": "Somalia" },
     { "currency": "SRD", "flag": "https://flagcdn.com/sr.svg", "name": "Suriname" },
     { "currency": "SSP", "flag": "https://flagcdn.com/ss.svg", "name": "South Sudan" },
-    { "currency": "STN", "flag": "https://flagcdn.com/st.svg", "name": "São Tomé and Príncipe" },
+    { "currency": "STN", "flag": "https://flagcdn.com/st.svg", "name": "Sao Tome and Principe" },
     { "currency": "SYP", "flag": "https://flagcdn.com/sy.svg", "name": "Syria" },
     { "currency": "SZL", "flag": "https://flagcdn.com/sz.svg", "name": "Eswatini" },
     { "currency": "THB", "flag": "https://flagcdn.com/th.svg", "name": "Thailand" },
