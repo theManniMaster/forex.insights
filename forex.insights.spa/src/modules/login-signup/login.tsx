@@ -109,9 +109,10 @@ class Login extends Component<Props, State> {
                         <Text className={styles.header}>Enter your details to log in.</Text>
                     </Col>
 
-                    <Col span={24} className={styles.formContainer}>
+                    <Col span={24}>
                         <Form
                             ref={this.formRef}
+                            className={styles.formContainer}
                             layout="vertical"
                             onFinish={this.handleFormValuesSubmit}
                         >
