@@ -1,22 +1,21 @@
 import { Component } from "react";
-import { Col, Form, Row, Select, Typography } from "antd";
+import { Col, Form, Select } from "antd";
 import { AlertItem } from "../enums";
-import styles from "./styles/currency-pair-selector.module.less";
 import { countries } from "./data";
 import CurrencyDropdownItem from "./currency-dropdown-item";
 
 const { Item } = Form;
-const { Text } = Typography;
 
 /**
  * Component for selecting a currency pair.
  */
 class CurrencyPairSelector extends Component {
     render() {
-        return <Row>
-            <Col span={12}>
+        return <>
+            <Col>
                 <Item
                     name={AlertItem.fromCurrency}
+                    label="When"
                     rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
@@ -36,13 +35,10 @@ class CurrencyPairSelector extends Component {
                 </Item>
             </Col>
 
-            <Col span={24}>
-                <Text className={styles.label}>to</Text>
-            </Col>
-
-            <Col span={12}>
+            <Col>
                 <Item
                     name={AlertItem.toCurrency}
+                    label="To"
                     rules={[{ required: true, message: "Please select a currency." }]}
                 >
                     <Select
@@ -61,7 +57,7 @@ class CurrencyPairSelector extends Component {
                     />
                 </Item>
             </Col>
-        </Row>
+        </>
     }
 }
 

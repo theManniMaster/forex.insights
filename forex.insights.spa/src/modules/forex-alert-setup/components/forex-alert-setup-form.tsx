@@ -1,11 +1,10 @@
 import { Component, createRef } from "react";
 import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { Button, Col, Form, FormInstance, Input, Radio, Row, Tooltip, Typography } from "antd";
+import { Button, Col, Form, FormInstance, Input, Radio, Row, Tooltip } from "antd";
 import CurrencyPairSelector from "./currency-pair-selector";
 import { AlertItem } from "../enums";
 import styles from "./styles/forex-alert-setup-form.module.less";
 
-const { Text } = Typography;
 const { Item } = Form;
 
 /**
@@ -47,100 +46,77 @@ class ForexAlertSetupForm extends Component<Props> {
         const { submitButtonLabel, alert } = this.props;
 
         return (
-            <Row justify="center" className={styles.container}>
+            <Form<ForexAlertGetResponse>
+                className={styles.container}
+                ref={this.formRef}
+                layout="vertical"
+                onFinish={this.handleFormValuesSubmit}
+                initialValues={
+                    alert ?? {
+                        [AlertItem.frequency]: NotificationFrequency.once,
+                        [AlertItem.contactMethod]: ContactMethod.email
+                    }
+                }
+            >
+                <Row justify="center" gutter={[0, 8]}>
+                    <Col span={24}>
+                        <Item
+                            name={AlertItem.frequency}
+                            label="Notify me"
+                            rules={[{ required: true, message: "Please select a frequency." }]}
+                        >
+                            <Radio.Group
+                                optionType="button"
+                                buttonStyle="solid"
+                            >
+                                <Radio value={NotificationFrequency.once}>Once</Radio>
+                                <Radio value={NotificationFrequency.daily}>Daily</Radio>
+                                <Radio value={NotificationFrequency.weekly}>Weekly</Radio>
+                            </Radio.Group>
+                        </Item>
+                    </Col>
 
-                <Col span={24}>
-                    <Form<ForexAlertGetResponse>
-                        ref={this.formRef}
-                        onFinish={this.handleFormValuesSubmit}
-                        initialValues={
-                            alert ?? {
-                                [AlertItem.frequency]: NotificationFrequency.once,
-                                [AlertItem.contactMethod]: ContactMethod.email
-                            }
-                        }
-                    >
-                        <Row className={styles.itemContainer}>
-                            <Col span={24} md={8}>
-                                <Text className={styles.label}>Notify me:</Text>
-                            </Col>
+                    <Col span={24}>
+                        <CurrencyPairSelector />
+                    </Col>
 
-                            <Col span={24} md={16}>
-                                <Item
-                                    name={AlertItem.frequency}
-                                    rules={[{ required: true, message: "Please select a frequency." }]}
-                                >
-                                    <Radio.Group
-                                        optionType="button"
-                                        buttonStyle="solid"
-                                    >
-                                        <Radio value={NotificationFrequency.once}>Once</Radio>
-                                        <Radio value={NotificationFrequency.daily}>Daily</Radio>
-                                        <Radio value={NotificationFrequency.weekly}>Weekly</Radio>
-                                    </Radio.Group>
-                                </Item>
-                            </Col>
-                        </Row>
+                    <Col span={24}>
+                        <Item
+                            name={AlertItem.minimumRate}
+                            label="Reaches a minimum of"
+                            rules={[
+                                { required: true, message: "Please enter the minimum amount to trigger this alert." },
+                                {
+                                    validator: (_, value) => value < this.minRate || value > this.maxRate ? Promise.reject() : Promise.resolve(),
+                                    message: "Value must be in the range 0.01 - 9,999,999.99"
+                                }
+                            ]}
+                        >
+                            <Input
+                                type="number"
+                                placeholder="Enter amount"
+                            />
+                        </Item>
+                    </Col>
 
-                        <Row className={styles.itemContainer}>
-                            <Col span={24} md={8}>
-                                <Text className={styles.label}>When:</Text>
-                            </Col>
+                    <Col span={24}>
+                        <Item
+                            name={AlertItem.contactMethod}
+                            label="Through"
+                            rules={[{ required: true, message: "Please select a contact method." }]}
+                        >
+                            <Radio.Group
+                                optionType="button"
+                                buttonStyle="solid"
+                            >
+                                <Radio value={ContactMethod.email}>Email</Radio>
 
-                            <Col span={24} md={16}>
-                                <CurrencyPairSelector />
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col span={24} md={8}>
-                                <Text className={styles.label}>Reaches a minimum of:</Text>
-                            </Col>
-
-                            <Col span={24} md={16}>
-                                <Item
-                                    name={AlertItem.minimumRate}
-                                    rules={[
-                                        {
-                                            required: true,
-                                            validator: (_, value) => value < this.minRate || value > this.maxRate ? Promise.reject() : Promise.resolve(),
-                                            message: "Value must be in the range 0.01 - 9,999,999.99"
-                                        }
-                                    ]}
-                                >
-                                    <Input
-                                        type="number"
-                                        placeholder="Enter amount"
-                                    />
-                                </Item>
-                            </Col>
-                        </Row>
-
-                        <Row>
-                            <Col span={24} md={8}>
-                                <Text className={styles.label}>Through:</Text>
-                            </Col>
-
-                            <Col span={24} md={16}>
-                                <Item
-                                    name={AlertItem.contactMethod}
-                                    rules={[{ required: true, message: "Please select a contact method." }]}
-                                >
-                                    <Radio.Group
-                                        optionType="button"
-                                        buttonStyle="solid"
-                                    >
-                                        <Radio value={ContactMethod.email}>Email</Radio>
-
-                                        <Tooltip title="Coming soon">
-                                            <Radio value={ContactMethod.sms} disabled>SMS</Radio>
-                                        </Tooltip>
-                                    </Radio.Group>
-                                </Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </Col>
+                                <Tooltip title="Coming soon">
+                                    <Radio value={ContactMethod.sms} disabled>SMS</Radio>
+                                </Tooltip>
+                            </Radio.Group>
+                        </Item>
+                    </Col>
 
                 <Col>
                     <Button
@@ -152,6 +128,7 @@ class ForexAlertSetupForm extends Component<Props> {
                     </Button>
                 </Col>
             </Row>
+        </Form>
         );
     }
 }

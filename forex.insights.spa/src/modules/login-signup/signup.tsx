@@ -124,9 +124,10 @@ class Signup extends Component<Props, State> {
                         <Text className={styles.header}>Enter your details to sign up.</Text>
                     </Col>
 
-                    <Col span={24} className={styles.formContainer}>
+                    <Col span={24}>
                         <Form
                             ref={this.formRef}
+                            className={styles.formContainer}
                             layout="vertical"
                             onFinish={this.handleFormValuesSubmit}
                         >
