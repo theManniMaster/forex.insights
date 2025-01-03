@@ -1,15 +1,14 @@
 import { Component } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import { Routes } from "../enum";
 import { apiClient } from "../../api";
 import { Button, Col, notification, Popconfirm, Row, Spin } from "antd";
 import styles from "./styles/protected-route.module.less";
-import { WithRouting, withRouting } from "../../modules";
 
 /**
  * Protected route props.
  */
-interface Props extends WithRouting { }
+interface Props { }
 
 /**
  * Protected route state.
@@ -64,7 +63,6 @@ class ProtectedRoute extends Component<Props, State> {
     };
 
     render() {
-        const { navigate } = this.props;
         const { loading } = this.state;
 
         return (
@@ -104,13 +102,14 @@ class ProtectedRoute extends Component<Props, State> {
                     }
 
                     <Row justify="center" className={styles.feedbackContainer}>
-                        <Button
-                            type="text"
-                            disabled={loading}
-                            onClick={() => navigate(Routes.feedback)}
-                        >
-                            Send Feedback
-                        </Button>
+                        <Link to={Routes.feedback}>
+                            <Button
+                                type="text"
+                                disabled={loading}
+                            >
+                                Send Feedback
+                            </Button>
+                        </Link>
                     </Row>
                 </>
                 :
@@ -119,6 +118,4 @@ class ProtectedRoute extends Component<Props, State> {
     }
 }
 
-const ComponentWithRouting = withRouting(ProtectedRoute);
-
-export default ComponentWithRouting;
+export default ProtectedRoute;
