@@ -12,6 +12,7 @@ namespace forex.insights.api.Controllers
     /// <summary>
     /// Forex Alert API Endpoint.
     /// </summary>
+    /// <param name="forexAlertService">Forex alert service.</param>
     [Route("api/[controller]")]
     [Authorize]
     public class ForexAlertController(IForexAlertService forexAlertService) : BaseApiController

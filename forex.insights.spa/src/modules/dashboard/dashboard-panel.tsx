@@ -48,7 +48,7 @@ class DashboardPanel extends Component<Props, State> {
                 this.setState({ alerts: response.forexAlerts, loading: false });
             })
             .catch(() => {
-                this.setState({ loading: false });
+                this.setState({ loading: false, alerts: [] });
             });
     };
 

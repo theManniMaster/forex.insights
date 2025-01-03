@@ -1,6 +1,6 @@
 import { Alert, Button, notification, Typography } from "antd";
 import { Component } from "react";
-import styles from "./styles/alert.module.less";
+import styles from "./styles/email-verification-panel.module.less";
 import { apiClient } from "../../../api";
 
 const { Text } = Typography;

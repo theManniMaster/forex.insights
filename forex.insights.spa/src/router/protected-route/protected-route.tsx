@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import { Routes } from "../enum";
 import { apiClient } from "../../api";
 import { Button, Col, notification, Popconfirm, Row, Spin } from "antd";
@@ -55,11 +55,14 @@ class ProtectedRoute extends Component<Props, State> {
     };
 
     logOut = () => {
+        this.setState({ loading: true });
+
         apiClient.auth
             .logout()
             .then(() => {
                 window.location.reload();
-            });
+            })
+            .finally(() => this.setState({ loading: false }));
     };
 
     render() {
@@ -68,25 +71,7 @@ class ProtectedRoute extends Component<Props, State> {
         return (
             apiClient.auth.isLoggedIn() ?
                 <>
-                    <Row justify="center" gutter={[12, 0]} className={styles.logoutContainer}>
-                        <Col>
-                            <Popconfirm
-                                title="Are you sure?"
-                                description="This action is irreversible. All linked alerts will also be deleted."
-                                okText="Delete"
-                                okButtonProps={{ danger: true, loading: loading }}
-                                onConfirm={this.deleteAccount}
-                                cancelButtonProps={{ disabled: loading }}
-                            >
-                                <Button
-                                    type="primary"
-                                    danger
-                                    loading={loading}
-                                >
-                                    Delete Account
-                                </Button>
-                            </Popconfirm>
-                        </Col>
+                    <Row justify="center" gutter={[12, 12]} className={styles.logoutContainer}>
                         <Col>
                             <Button
                                 onClick={this.logOut}
@@ -95,11 +80,40 @@ class ProtectedRoute extends Component<Props, State> {
                                 Log out
                             </Button>
                         </Col>
+                        <Col>
+                            <Popconfirm
+                                title="Are you sure?"
+                                description="This action is irreversible. All linked alerts will also be deleted."
+                                okText="Delete"
+                                okButtonProps={{ danger: true, disabled: loading }}
+                                onConfirm={this.deleteAccount}
+                                cancelButtonProps={{ disabled: loading }}
+                            >
+                                <Button
+                                    type="primary"
+                                    danger
+                                    disabled={loading}
+                                >
+                                    Delete Account
+                                </Button>
+                            </Popconfirm>
+                        </Col>
                     </Row>
 
                     {
                         loading ? <Spin className={styles.spin} /> : <Outlet />
                     }
+
+                    <Row justify="center" className={styles.feedbackContainer}>
+                        <Link to={Routes.feedback}>
+                            <Button
+                                type="text"
+                                disabled={loading}
+                            >
+                                Send Feedback
+                            </Button>
+                        </Link>
+                    </Row>
                 </>
                 :
                 <Navigate to={Routes.login} replace />

@@ -10,7 +10,7 @@ const { Text } = Typography;
  */
 class ErrorPage extends Component {
     render() {
-        return <Row justify="center" align="middle" className={styles.container}>
+        return (<Row justify="center" align="middle" className={styles.container}>
             <Col span={24}>
                 <Text className={styles.header}>Oops!</Text>
                 <Text className={styles.subheader}>We couldn't find the page you were looking for.</Text>
@@ -26,7 +26,7 @@ class ErrorPage extends Component {
                     </Button>
                 </Link>
             </Col>
-        </Row>;
+        </Row>);
     }
 }
 

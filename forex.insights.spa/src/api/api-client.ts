@@ -1,5 +1,6 @@
 import { ApiErrorResponse, AuthClient } from "./auth";
 import { HttpMethod } from "./enums";
+import { FeedbackClient } from "./feedback";
 import { ForexAlertClient } from "./forex-alert";
 import Token from "./token";
 import { UserClient } from "./user";
@@ -74,6 +75,11 @@ class ApiClient {
      * User client.
      */
     user = new UserClient(this.fetchData);
+
+    /**
+     * Feedback client.
+     */
+    feedback = new FeedbackClient(this.fetchData);
 }
 
 const instance = new ApiClient();
