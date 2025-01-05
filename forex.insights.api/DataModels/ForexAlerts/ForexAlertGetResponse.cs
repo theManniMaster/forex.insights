@@ -42,5 +42,10 @@ namespace forex.insights.api.DataModels.ForexAlerts
         /// If Alert is active.
         /// </summary>
         public bool IsActive { get; set; } = forexAlert.IsActive;
+
+        /// <summary>
+        /// Last sent time.
+        /// </summary>
+        public DateTime? LastSentTime { get; set; } = forexAlert.LastSentTime;
     }
 }

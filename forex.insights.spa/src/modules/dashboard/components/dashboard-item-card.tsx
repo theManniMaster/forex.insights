@@ -6,6 +6,7 @@ import styles from "./styles/dashboard-item-card.module.less";
 import { countries } from "../../forex-alert-setup";
 import { Routes } from "../../../router";
 import { withRouting, WithRouting } from "../../higher-order-components";
+import dayjs from "dayjs";
 
 const { Text } = Typography;
 
@@ -140,6 +141,13 @@ class DashboardItemCard extends Component<Props> {
                         </Row>
                     </Col>
                 </Row>
+
+                {
+                    !alert.isActive && alert.lastSentTime &&
+                        <Text className={styles.completedAlertText}>
+                            This alert will be removed in {10 - dayjs().diff(dayjs(alert.lastSentTime), "day")} days.
+                        </Text>
+                }
             </Card>
         </Col>;
     }
