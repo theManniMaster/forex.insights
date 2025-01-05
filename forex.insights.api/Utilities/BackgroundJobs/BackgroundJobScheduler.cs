@@ -11,6 +11,9 @@ namespace forex.insights.api.Utilities.BackgroundJobs
         private const string _eveningJobId = "evening_job";
         private const string _eveningCron = "5 0 * * *";
 
+        private const string _alertCleanupJobId = "alert_cleanup_job";
+        private const string _alertCleanupCron = "0 0 * * *";
+
         /// <summary>
         /// Schedule jobs to run twice a day.
         /// </summary>
@@ -22,6 +25,12 @@ namespace forex.insights.api.Utilities.BackgroundJobs
                 _eveningJobId,
                 service => service.DispatchAsync(),
                 _eveningCron
+            );
+
+            RecurringJob.AddOrUpdate<IAlertCleanupService>(
+                _alertCleanupJobId,
+                service => service.CleanupAlertsAsync(),
+                _alertCleanupCron
             );
         }
     }

@@ -38,6 +38,11 @@ interface ForexAlertGetResponse {
      * If Alert is active.
      */
     isActive: boolean;
+
+    /**
+     * Last sent time.
+     */
+    lastSentTime?: string;
 }
 
 export type { ForexAlertGetResponse };
