@@ -103,8 +103,7 @@ namespace forex.insights.api.Controllers
             if (!success)
                 return BadRequest(new ApiErrorResponse([errorMessage]));
 
-            // don't await this check.
-            _ = dispatcherService.SendNotificationIfCriteriaMetAsync(forexAlert, new() { { userId.Value.ToString(), userEmail } });
+            await dispatcherService.SendNotificationIfCriteriaMetAsync(forexAlert, new() { { userId.Value.ToString(), userEmail } });
 
             return new ForexAlertPostResponse(forexAlert);
         }
