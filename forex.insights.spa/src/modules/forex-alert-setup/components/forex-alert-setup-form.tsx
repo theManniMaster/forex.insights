@@ -1,6 +1,6 @@
 import { Component, createRef } from "react";
 import { ContactMethod, ForexAlertGetResponse, NotificationFrequency } from "../../../api";
-import { Button, Col, Form, FormInstance, Input, Radio, Row, Tooltip } from "antd";
+import { Button, Col, Form, FormInstance, InputNumber, Radio, Row, Tooltip } from "antd";
 import CurrencyPairSelector from "./currency-pair-selector";
 import { AlertItem } from "../enums";
 import styles from "./styles/forex-alert-setup-form.module.less";
@@ -92,9 +92,11 @@ class ForexAlertSetupForm extends Component<Props> {
                                 }
                             ]}
                         >
-                            <Input
-                                type="number"
+                            <InputNumber
+                                precision={2}
                                 placeholder="Enter amount"
+                                step={0.1}
+                                className={styles.inputNumber}
                             />
                         </Item>
                     </Col>
