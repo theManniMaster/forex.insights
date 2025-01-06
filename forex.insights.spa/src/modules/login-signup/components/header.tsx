@@ -17,9 +17,9 @@ class Header extends Component {
                 </Row>
                 <Row justify="center">
                     <Text className={styles.introDescription}>
-                        Forex Insights
-                        (<Link className={styles.link} to="https://www.youtube.com/watch?v=U-l4ya3ejko" target="_blank">FeIn</Link>)
-                        delivers real-time currency updates and instant alerts when your desired rates are met.
+                        With Forex Insights
+                        (<Link className={styles.link} to="https://www.youtube.com/watch?v=U-l4ya3ejko" target="_blank">FeIn</Link>), 
+                        set your preferred exchange rate and receive notifications when your target is met.
                     </Text>
                 </Row>
             </div>
