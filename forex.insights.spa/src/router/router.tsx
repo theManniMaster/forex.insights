@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { AddAlertPanel, DashboardPanel, EditAlertPanel, ErrorPage, FeedbackPage, Login, Signup } from "../modules";
+import { AddAlertPanel, DashboardPanel, EditAlertPanel, ErrorPage, FeedbackPage, ResetPassword, Login, Signup } from "../modules";
 import { RouteParams, Routes } from ".";
 import { ProtectedRoute } from "./protected-route";
 
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: Routes.feedback,
                 element: <FeedbackPage />
+            },
+            {
+                path: Routes.resetPassword,
+                element: <ResetPassword />
             },
             {
                 element: <ProtectedRoute />,

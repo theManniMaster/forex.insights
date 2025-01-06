@@ -143,7 +143,7 @@ class Login extends Component<Props, State> {
                 <Row className={styles.forgotPasswordContainer}>
                     <Col>
                         <Link
-                            to={Routes.forgotPassword}
+                            to={Routes.resetPassword}
                             className={styles.forgotPasswordLink}
                         >
                             Forgot password?
