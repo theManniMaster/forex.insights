@@ -39,9 +39,10 @@ namespace forex.insights.api.Services.Interfaces
         /// <summary>
         /// Inserts a new ForexAlert into the database.
         /// </summary>
-        /// <param name="alert">New Alert.</param>
-        /// <returns>Task.</returns>
-        Task InsertAsync(ForexAlert alert);
+        /// <param name="forexAlert">New Alert.</param>
+        /// <param name="userId">User Id.</param>
+        /// <returns>Success, error message.</returns>
+        Task<(bool, string)> InsertAsync(ForexAlert forexAlert, Guid userId);
 
         /// <summary>
         /// Updates an existing ForexAlert.

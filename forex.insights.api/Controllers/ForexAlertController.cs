@@ -13,12 +13,11 @@ namespace forex.insights.api.Controllers
     /// Forex Alert API Endpoint.
     /// </summary>
     /// <param name="forexAlertService">Forex alert service.</param>
+    /// <param name="dispatcherService">Notification dispatcher service.</param>
     [Route("api/[controller]")]
     [Authorize]
-    public class ForexAlertController(IForexAlertService forexAlertService) : BaseApiController
+    public class ForexAlertController(IForexAlertService forexAlertService, INotificationDispatcherService dispatcherService) : BaseApiController
     {
-        private const int _maxAlertCount = 8;
-
         /// <summary>
         /// Get Forex Alert by Id.
         /// </summary>
@@ -84,8 +83,9 @@ namespace forex.insights.api.Controllers
         public async Task<ActionResult<ForexAlertPostResponse>> PostAsync([FromBody] ForexAlertPostRequest request)
         {
             var userId = GetUserId();
+            var userEmail = GetUserEmail();
 
-            if (!userId.HasValue)
+            if (!userId.HasValue || string.IsNullOrEmpty(userEmail))
                 return Unauthorized();
 
             var forexAlert = new ForexAlert
@@ -98,14 +98,13 @@ namespace forex.insights.api.Controllers
                 UserId = userId.Value
             };
 
-            var existingAlerts = await forexAlertService.GetAllAsync(userId.Value);
+            var (success, errorMessage) = await forexAlertService.InsertAsync(forexAlert, userId.Value);
 
-            if (existingAlerts.Count() >= _maxAlertCount)
-                return BadRequest(new ApiErrorResponse([$"You have reached the maximum limit of {_maxAlertCount} alerts."]));
-            else if (existingAlerts.Any(alert => alert.FromCurrency == forexAlert.FromCurrency && alert.ToCurrency == forexAlert.ToCurrency))
-                return BadRequest(new ApiErrorResponse([$"Alert for {forexAlert.FromCurrency} to {forexAlert.ToCurrency} already exists."]));
+            if (!success)
+                return BadRequest(new ApiErrorResponse([errorMessage]));
 
-            await forexAlertService.InsertAsync(forexAlert);
+            // don't await this check.
+            _ = dispatcherService.SendNotificationIfCriteriaMetAsync(forexAlert, new() { { userId.Value.ToString(), userEmail } });
 
             return new ForexAlertPostResponse(forexAlert);
         }
