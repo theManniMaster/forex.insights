@@ -129,6 +129,8 @@ namespace forex.insights.api.Controllers
             if (existingAlert == default || existingAlert.UserId != userId.Value)
                 return NotFound();
 
+            var minimumRateUpdated = request.MinimumRate.HasValue && request.MinimumRate != existingAlert.MinimumRate;
+
             existingAlert.Frequency = request.Frequency ?? existingAlert.Frequency;
             existingAlert.FromCurrency = request.FromCurrency ?? existingAlert.FromCurrency;
             existingAlert.ToCurrency = request.ToCurrency ?? existingAlert.ToCurrency;
@@ -137,6 +139,9 @@ namespace forex.insights.api.Controllers
             existingAlert.IsActive = true;
 
             await forexAlertService.UpdateAsync(existingAlert);
+
+            if (minimumRateUpdated)
+                await dispatcherService.SendNotificationIfCriteriaMetAsync(existingAlert, new() { { userId.Value.ToString(), GetUserEmail() } });
 
             return Ok();
         }
