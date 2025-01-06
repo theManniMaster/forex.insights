@@ -9,6 +9,7 @@ enum Routes {
     create = "/create",
     edit = "/edit",
     feedback = "/feedback",
+    forgotPassword = "/forgot-password",
     oops = "/oops",
 }
 

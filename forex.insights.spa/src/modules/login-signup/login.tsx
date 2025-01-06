@@ -6,6 +6,7 @@ import { apiClient, ApiErrorResponse } from "../../api";
 import { WithRouting, withRouting } from "../higher-order-components";
 import { Routes } from "../../router";
 import { EmailVerificationPanel, Header } from "./components";
+import { Link } from "react-router-dom";
 
 const { Text } = Typography;
 const { Item } = Form;
@@ -137,6 +138,17 @@ class Login extends Component<Props, State> {
                         </Form>
                     </Col>
 
+                </Row>
+
+                <Row className={styles.forgotPasswordContainer}>
+                    <Col>
+                        <Link
+                            to={Routes.forgotPassword}
+                            className={styles.forgotPasswordLink}
+                        >
+                            Forgot password?
+                        </Link>
+                    </Col>
                 </Row>
 
                 <Row justify="center">
