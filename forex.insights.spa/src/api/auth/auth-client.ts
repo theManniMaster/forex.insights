@@ -1,7 +1,7 @@
 import { HttpMethod } from "../enums";
 import Token from "../token";
 import { ApiErrorResponse } from "./error-responses";
-import { LoginRequest, RegisterRequest, ResendVerificationRequest } from "./interfaces";
+import { ForgotPasswordRequest, LoginRequest, RegisterRequest, ResendVerificationRequest, ResetPasswordRequest } from "./interfaces";
 
 /**
  * Api client for auth.
@@ -60,7 +60,11 @@ class AuthClient {
      * @param data Request data.
      */
     login(data: LoginRequest) {
-        return this.fetchData(data, "login");
+        return this.fetchData(
+            data,
+            "login",
+            this.parseToken
+        );
     }
 
     /**
@@ -68,7 +72,27 @@ class AuthClient {
      * @param data Request data.
      */
     register(data: RegisterRequest) {
-        return this.fetchData(data, "register");
+        return this.fetchData(
+            data,
+            "register",
+            this.parseToken
+        );
+    }
+
+    /**
+     * Forgot password.
+     * @param data Request
+     */
+    forgotPassword(data: ForgotPasswordRequest) {
+        return this.fetchData(data, "forgotPassword");
+    }
+
+    /**
+     * Reset password.
+     * @param data Request data.
+     */
+    resetPassword(data: ResetPasswordRequest) {
+        return this.fetchData(data, "resetPassword");
     }
 
     /**
@@ -83,15 +107,31 @@ class AuthClient {
      * Refresh token.
      */
     refreshToken() {
-        return this.fetchData({ refreshToken: this.getToken().refreshToken }, "refresh");
+        return this.fetchData(
+            { refreshToken: this.getToken().refreshToken },
+            "refresh",
+            this.parseToken
+        );
+    }
+
+    /**
+     * Parse token from response text.
+     * @param responseText Api response.
+     */
+    private parseToken = (responseText?: string) => {
+        if (responseText) {
+            this.getToken().parse(responseText);
+            this.addToLocalStorage();
+        }
     }
 
     /**
      * Fetch data from the API.
      * @param requestData Request data to send.
      * @param endpoint Endpoint to fetch data from.
+     * @param callback Callback function to call after the fetch.
      */
-    private async fetchData(requestData: object, endpoint: string): Promise<void> {
+    private async fetchData(requestData: object, endpoint: string, callback?: (responseText?: string) => void): Promise<void> {
         return fetch(`${this.baseUrl}/${endpoint}`, {
             method: HttpMethod.Post,
             headers: {
@@ -113,11 +153,9 @@ class AuthClient {
                 throw new ApiErrorResponse(errors);
             }
 
-            await response.text().then((text) => {
-                if (text) {
-                    this.getToken().parse(text);
-                    this.addToLocalStorage();
-                }
+            return await response.text().then((text) => {
+                if (callback)
+                    callback(text);
             });
         });
     }
