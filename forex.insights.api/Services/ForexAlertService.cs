@@ -1,4 +1,5 @@
 ﻿using forex.insights.api.Data;
+using forex.insights.api.DataModels;
 using forex.insights.api.Entities.ForexAlerts;
 using forex.insights.api.Services.Interfaces;
 using Microsoft.Data.SqlClient;
@@ -9,8 +10,11 @@ namespace forex.insights.api.Services
     /// <summary>
     /// Implementation of IForexAlertService.
     /// </summary>
+    /// <param name="dbContext">Database context.</param>
     public class ForexAlertService(ForexAlertDbContext dbContext) : IForexAlertService
     {
+        private const int _maxAlertCount = 8;
+
         /// <inheritdoc />
         public async Task<ForexAlert?> GetAsync(Guid id)
         {
@@ -38,10 +42,23 @@ namespace forex.insights.api.Services
         }
 
         /// <inheritdoc />
-        public async Task InsertAsync(ForexAlert alert)
+        public async Task<(bool, string)> InsertAsync(ForexAlert forexAlert, Guid userId)
         {
-            await dbContext.ForexAlerts.AddAsync(alert);
+            var existingAlerts = await GetAllAsync(userId);
+
+            if (existingAlerts.Count() >= _maxAlertCount)
+            {
+                return (false, $"You have reached the maximum limit of {_maxAlertCount} alerts.");
+            }
+            else if (existingAlerts.Any(alert => alert.FromCurrency == forexAlert.FromCurrency && alert.ToCurrency == forexAlert.ToCurrency))
+            {
+                return (false, $"Alert for {forexAlert.FromCurrency} to {forexAlert.ToCurrency} already exists.");
+            }
+
+            await dbContext.ForexAlerts.AddAsync(forexAlert);
             await dbContext.SaveChangesAsync();
+
+            return (true, "");
         }
 
         /// <inheritdoc />

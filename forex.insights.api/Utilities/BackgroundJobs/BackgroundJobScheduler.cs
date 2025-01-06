@@ -23,7 +23,7 @@ namespace forex.insights.api.Utilities.BackgroundJobs
             // This job will run at 7:05 pm (12:05 am utc). 
             RecurringJob.AddOrUpdate<INotificationDispatcherService>(
                 _eveningJobId,
-                service => service.DispatchAsync(),
+                service => service.SetupDispatchAsync(),
                 _eveningCron
             );
 

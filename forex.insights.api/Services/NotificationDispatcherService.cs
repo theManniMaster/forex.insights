@@ -24,7 +24,7 @@ namespace forex.insights.api.Services
         private const int _bufferHour = 1;
 
         /// <inheritdoc />
-        public async Task DispatchAsync()
+        public async Task SetupDispatchAsync()
         {
             var verifiedUsers = await userService.GetVerifiedUsersAsync();
 
@@ -36,7 +36,7 @@ namespace forex.insights.api.Services
 
             foreach (var alert in activeAlerts)
             {
-                await DispatchIfCriteriaMetAsync(alert, userIdToEmailMap);
+                await SendNotificationIfCriteriaMetAsync(alert, userIdToEmailMap);
             }
         }
 
@@ -77,13 +77,8 @@ namespace forex.insights.api.Services
             return activeAlerts;
         }
 
-        /// <summary>
-        /// Dispatch notification if minimum rate criteria is met.
-        /// </summary>
-        /// <param name="alert">Alert to be sent.</param>
-        /// <param name="userIdToEmailMap">User Id to email map.</param>
-        /// <returns>Task.</returns>
-        private async Task DispatchIfCriteriaMetAsync(ForexAlert alert, Dictionary<string, string?> userIdToEmailMap)
+        /// <inheritdoc />
+        public async Task SendNotificationIfCriteriaMetAsync(ForexAlert alert, Dictionary<string, string?> userIdToEmailMap)
         {
             var service = GetNotificationService(alert.ContactMethod);
             var email = userIdToEmailMap.GetValueOrDefault(alert.UserId.ToString(), "");

@@ -22,5 +22,14 @@ namespace forex.insights.api.Utilities
 
             return null;
         }
+
+        /// <summary>
+        /// Get current user's email.
+        /// </summary>
+        /// <returns>Email, if exists.</returns>
+        protected string? GetUserEmail()
+        {
+            return HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        }
     }
 }
