@@ -1,15 +1,17 @@
+const base = "/forex.insights";
+
 /**
  * Enum for routes.
  */
 enum Routes {
-    root = "/",
-    login = "/login",
-    register = "/register",
-    dashboard = "/dashboard",
-    create = "/create",
-    edit = "/edit",
-    feedback = "/feedback",
-    oops = "/oops",
+    root = base,
+    login = `${base}/login`,
+    register = `${base}/register`,
+    dashboard = `${base}/dashboard`,
+    create = `${base}/create`,
+    edit = `${base}/edit`,
+    feedback = `${base}/feedback`,
+    oops = `${base}/oops`,
 }
 
 export default Routes;
