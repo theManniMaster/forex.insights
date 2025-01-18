@@ -24,7 +24,7 @@ class App extends Component {
          * This code detects when the page is reloaded and redirects the user back to the root URL to prevent the 404 error. And react router handles the rest.
          */
 
-        const navigationEntries = window.performance.getEntriesByType("navigation");
+        const navigationEntries = window.performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
 
         if (navigationEntries.length > 0 && navigationEntries[0].type === "reload") {
             window.location.replace(Routes.root);
