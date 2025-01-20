@@ -35,8 +35,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache-dependency-path: './forex.insights.spa/package-lock.json'
           cache: 'npm'
+          cache-dependency-path: './forex.insights.spa/package-lock.json'
       - name: Install and Build
         working-directory: ./forex.insights.spa  # Set working directory for this step
         env:
