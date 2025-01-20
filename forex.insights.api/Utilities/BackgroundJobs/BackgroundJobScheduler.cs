@@ -21,17 +21,17 @@ namespace forex.insights.api.Utilities.BackgroundJobs
         {
             // Exchange Rate API updates data at 7pm (toronto time, midnight utc) everyday. 
             // This job will run at 7:05 pm (12:05 am utc). 
-            RecurringJob.AddOrUpdate<INotificationDispatcherService>(
-                _eveningJobId,
-                service => service.SetupDispatchAsync(),
-                _eveningCron
-            );
+            //RecurringJob.AddOrUpdate<INotificationDispatcherService>(
+            //    _eveningJobId,
+            //    service => service.SetupDispatchAsync(),
+            //    _eveningCron
+            //);
 
-            RecurringJob.AddOrUpdate<IAlertCleanupService>(
-                _alertCleanupJobId,
-                service => service.CleanupAlertsAsync(),
-                _alertCleanupCron
-            );
+            //RecurringJob.AddOrUpdate<IAlertCleanupService>(
+            //    _alertCleanupJobId,
+            //    service => service.CleanupAlertsAsync(),
+            //    _alertCleanupCron
+            //);
         }
     }
 }
