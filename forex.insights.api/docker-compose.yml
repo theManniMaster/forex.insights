@@ -12,7 +12,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest 
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=AVeryLargePasswordString@test!
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
