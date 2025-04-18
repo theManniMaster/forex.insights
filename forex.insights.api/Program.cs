@@ -17,8 +17,9 @@ namespace forex.insights.api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
             var services = builder.Services;
-            var connectionString = builder.Configuration.GetConnectionString("ForexAlertDbConnectionString");
+            var connectionString = builder.Configuration["ForexAlertDbConnectionString"];
 
             // Add DbContext.
             services.AddDbContext<ForexAlertDbContext>(options =>
