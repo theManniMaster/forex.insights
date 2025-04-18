@@ -73,7 +73,7 @@ class Login extends Component<Props, State> {
             .catch((error: ApiErrorResponse) => {
                 let description = "Something went wrong. Please make sure the credentials are correct.";
 
-                if (error.errors.length > 0)
+                if (error.errors && error.errors.length > 0)
                     description = error.errors.map(e => e).join(" | ");
 
                 notification.error({

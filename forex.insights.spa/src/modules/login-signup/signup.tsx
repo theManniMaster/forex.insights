@@ -80,7 +80,7 @@ class Signup extends Component<Props, State> {
             .catch((error: ApiErrorResponse) => {
                 let description = "Something went wrong. Please try again.";
 
-                if (error.errors.length > 0)
+                if (error.errors && error.errors.length > 0)
                     description = error.errors.map(e => e).join(" | ");
 
                 notification.error({
